@@ -1,0 +1,31 @@
+@import "../../base";
+
+#hero_container {
+	@include px(8rem);
+	@include py(5rem);
+	@include flex(row-reverse, center, space-between, 48px);
+
+	.hero_image {
+		width: 50%;
+		@include centered;
+
+		& > img {
+			@include width-image(90%);
+		}
+	}
+
+	.text_container {
+		width: 50%;
+		@include flex(column, start, center, 10px);
+
+		.price {
+			margin-top: 8px;
+			color: $grey;
+		}
+
+		& > button {
+			margin-top: 32px;
+			@include button($blue, white, 2.4rem, 0.8rem);
+		}
+	}
+}

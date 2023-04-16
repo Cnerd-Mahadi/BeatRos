@@ -1,0 +1,37 @@
+@import "../base";
+
+.nav_container {
+	background-color: $container_deep;
+	@include px(4rem);
+	@include py(1.3rem);
+	@include space-between();
+	@include shadow-xl;
+
+	& > h3 {
+		font-weight: 700;
+		font-size: 2rem;
+
+		span {
+			color: $red;
+		}
+	}
+
+	.nav_links {
+		@include flex($gap: 40px);
+
+		& > a {
+			@include link();
+		}
+
+		.nav_cart {
+			@include icon(20px, 20px);
+			@include link();
+		}
+
+		.nav_user {
+			margin-left: 32px;
+			@include icon(20px, 20px);
+			@include link();
+		}
+	}
+}

@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap");
+@import "variables";
+
+*,
+::after {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	text-decoration: none;
+	box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+button,
+a,
+input {
+	font-family: "Noto Sans", sans-serif;
+	color: $text_white;
+}
+
+h1 {
+	font-size: 3rem;
+	font-weight: 700;
+}
+h3 {
+	font-size: 1.4rem;
+	font-weight: 700;
+}
+h5,
+a {
+	font-size: 1rem;
+	font-weight: 500;
+}
+h6 {
+	font-size: 0.8rem;
+	font-weight: 400;
+}
+
+p {
+	font-size: 1rem;
+	font-weight: 400;
+}
+
+button {
+	font-size: 1rem;
+	font-weight: 700;
+}

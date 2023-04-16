@@ -1,0 +1,40 @@
+@import "../base";
+
+#home {
+	.featured {
+		@include my(8rem);
+		@include px(0.5rem);
+
+		h3 {
+			text-align: center;
+			margin-bottom: 4rem;
+		}
+
+		.featured_products {
+			@include space-between;
+		}
+	}
+
+	.top_products {
+		@include px(0.5rem);
+		& > h3 {
+			text-align: center;
+			margin-bottom: 2.5rem;
+		}
+
+		.top_nav {
+			@include flex($gap: 48px);
+			margin-bottom: 3rem;
+
+			a {
+				@include link();
+			}
+		}
+
+		.top_container {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 40px;
+		}
+	}
+}
