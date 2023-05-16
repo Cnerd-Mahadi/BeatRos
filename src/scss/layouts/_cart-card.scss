@@ -1,0 +1,114 @@
+.cart-card {
+	@include flex-row(stretch, space-between, 2.5rem);
+	padding: 0.5rem 0.5rem;
+	background-color: $container_light;
+	border-radius: 1.25rem;
+	gap: 2rem;
+
+	&__image {
+		width: 20%;
+		min-width: 10rem;
+		background-color: $container_bright;
+		padding: 0.75rem;
+		border-top-left-radius: 0.75rem;
+		border-bottom-left-radius: 0.75rem;
+
+		@include response(sm) {
+			background-color: $container_light;
+			min-width: 7rem;
+		}
+
+		& > img {
+			width: 100%;
+		}
+	}
+
+	&__details {
+		@include flex-col(start, start, 1rem);
+		margin-top: 0.75rem;
+		width: 70%;
+
+		& > h4 {
+			font-size: 1.5rem;
+			font-weight: 500;
+		}
+
+		& > p {
+			color: $grey;
+			font-weight: 600;
+			font-size: 1.75rem;
+		}
+
+		@include response(sm) {
+			width: 60%;
+		}
+	}
+
+	&__counter {
+		@include flex-row(stretch, center, 0rem);
+		width: 15rem;
+		height: 3rem;
+		margin-top: 1rem;
+		padding: 0.15rem;
+		background-color: $container_bright;
+		border-radius: 3.25rem;
+
+		@include response(xs) {
+			width: 10rem;
+		}
+
+		.counter-tab {
+			@include flex-row($gap: 0rem);
+			background-color: $container_light;
+			width: 100%;
+
+			&:nth-child(1) {
+				@include transition;
+				border-top-left-radius: 3.25rem;
+				border-bottom-left-radius: 3.25rem;
+				cursor: pointer;
+
+				&:hover {
+					background-color: $container_bright;
+				}
+			}
+
+			&:nth-child(2) {
+				background-color: $container_deep;
+			}
+
+			&:nth-child(3) {
+				@include transition;
+				border-top-right-radius: 3.25rem;
+				border-bottom-right-radius: 3.25rem;
+				cursor: pointer;
+
+				&:hover {
+					background-color: $container_bright;
+				}
+			}
+		}
+
+		.counter-plus {
+			@include icon(1rem);
+			color: $grey;
+		}
+
+		.count-number {
+			font-weight: 700;
+			font-size: 1.5rem;
+		}
+
+		.counter-minus {
+			@include icon(1rem);
+			color: $grey;
+		}
+	}
+
+	&__trash {
+		@include icon(2rem);
+		margin-top: 1.25rem;
+		margin-right: 2rem;
+		@include link();
+	}
+}

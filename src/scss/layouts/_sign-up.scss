@@ -1,0 +1,96 @@
+.signup {
+	@include flex-row(center, space-between, 3rem);
+	flex-wrap: wrap;
+	width: 90%;
+	max-width: 90rem;
+	margin: auto;
+	padding: 10rem 8rem;
+	background-color: $container_deep;
+	border-radius: 1.25rem;
+	box-shadow: $shadow-xl;
+
+	@include response(md) {
+		flex-direction: column-reverse;
+		max-width: 50rem;
+		padding: 10rem 3rem;
+	}
+
+	& > form {
+		@include flex-col(start, center, 0rem);
+
+		@include response(md) {
+			width: 100%;
+			align-items: center;
+		}
+
+		& > h1 {
+			margin-bottom: 2.7rem;
+
+			@include response(sm) {
+				font-size: 3rem;
+			}
+		}
+
+		& > input[type="submit"] {
+			padding: 1.2rem 4rem;
+			margin-bottom: 5rem;
+			font-weight: 700;
+		}
+	}
+
+	&__icon {
+		@include icon(1.5rem);
+		color: $white;
+	}
+
+	&__agreement {
+		@include flex-row(center, start, 1.5rem);
+		margin-bottom: 3rem;
+
+		@include response(md) {
+			justify-content: center;
+		}
+
+		& > h5 {
+			display: inline;
+		}
+	}
+
+	&__small {
+		@include link();
+		display: none;
+		font-weight: 700;
+		font-size: 1.5rem;
+		text-align: center;
+		text-decoration: underline;
+
+		@include response(md) {
+			display: block;
+		}
+	}
+
+	&__sidebar {
+		@include flex-col(center, center, 0.75rem);
+
+		& > img {
+			@include width-image(35rem);
+			display: block;
+			margin-bottom: 1rem;
+
+			@include response(md) {
+				@include width-image(70%);
+			}
+		}
+
+		& > a {
+			@include link();
+			text-decoration: underline;
+			font-weight: 700;
+			font-size: 1.5rem;
+
+			@include response(md) {
+				display: none;
+			}
+		}
+	}
+}

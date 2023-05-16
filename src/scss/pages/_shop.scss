@@ -1,0 +1,19 @@
+.shop {
+	@include flex-row(start, space-between, 3rem);
+
+	&__filters {
+		width: 25%;
+
+		@include response(md) {
+			display: none;
+		}
+	}
+
+	&__products {
+		width: 80%;
+
+		@include response(md) {
+			width: 100%;
+		}
+	}
+}

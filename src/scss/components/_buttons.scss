@@ -1,0 +1,24 @@
+.button {
+	@include transition;
+
+	padding: 1.5rem 3.5rem;
+	background-color: $blue;
+	color: $white;
+	border-radius: 1.25rem;
+	cursor: pointer;
+
+	&:hover {
+		color: $background;
+		background-color: $white;
+	}
+}
+
+.btn--subscribe {
+	height: 100%;
+	padding: 0 0;
+	background-color: $red;
+	border-top-right-radius: 2rem;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 2rem;
+}

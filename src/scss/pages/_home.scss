@@ -1,0 +1,27 @@
+.home {
+	&__featured {
+		& > h2 {
+			margin-bottom: 4rem;
+			text-align: center;
+		}
+	}
+
+	&__featured-products {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+		gap: 10rem;
+	}
+
+	&__top-products {
+		& > h2 {
+			margin-bottom: 3.25rem;
+			text-align: center;
+		}
+	}
+
+	&__top-products-nav {
+		flex-wrap: wrap;
+		row-gap: 2.25rem;
+		margin-bottom: 4.25rem;
+	}
+}

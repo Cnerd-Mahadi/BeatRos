@@ -1,0 +1,99 @@
+.featured-product {
+	@include flex-col(center, center, 2rem);
+
+	& > h5 {
+		color: $grey;
+		font-weight: 400;
+	}
+
+	& > img {
+		@include width-image();
+
+		@include response(sm) {
+			width: 70%;
+		}
+	}
+}
+
+.product {
+	&__image {
+		@include flex-row(center, center);
+		height: 28rem;
+		background-color: $container_bright;
+		border-top-right-radius: 1.25rem;
+		border-top-left-radius: 1.25rem;
+
+		img {
+			@include fit-image(15rem, 15rem);
+			@include scaled;
+		}
+	}
+
+	&__details {
+		padding: 1.75rem 0rem 2.25rem 1.25rem;
+		background-color: $container_deep;
+		border-bottom-right-radius: 1.25rem;
+		border-bottom-left-radius: 1.25rem;
+	}
+
+	&__category {
+		color: $grey;
+		font-weight: 600;
+	}
+
+	&__title {
+		margin-top: 0.5rem;
+		color: $white;
+		font-weight: 600;
+	}
+
+	&__shop {
+		@include flex-row(end, space-between, 0rem);
+		margin-top: 2.25rem;
+	}
+
+	&__info {
+		& > h3 {
+			margin-top: 1rem;
+			color: $grey;
+			font-size: 1.85rem;
+		}
+	}
+
+	&__cart {
+		@include icon(4.5rem);
+		@include transition;
+		background-color: $container_light;
+		padding: 1rem;
+		margin-right: 1.75rem;
+		color: $white;
+		border-radius: 0.75rem;
+		cursor: pointer;
+
+		&:hover {
+			background-color: $container_bright;
+		}
+	}
+}
+
+.top-products {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(20rem, 30rem));
+	gap: 3rem;
+	justify-content: space-around;
+}
+
+.product-gallery {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(20rem, 30rem));
+	gap: 3rem;
+	justify-content: space-around;
+}
+
+.blogs {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(20rem, 30rem));
+	column-gap: 3rem;
+	row-gap: 6rem;
+	justify-content: space-around;
+}

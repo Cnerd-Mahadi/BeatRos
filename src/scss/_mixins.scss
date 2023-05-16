@@ -1,136 +1,112 @@
-@import "variables";
+//Display mixins
 
-//container
-
-@mixin flex($direction: row, $align: center, $justify: center, $gap: 0px) {
+@mixin flex-row($align: center, $justify: center, $gap: 2rem) {
 	display: flex;
-	flex-direction: $direction;
+	flex-direction: row;
 	align-items: $align;
 	justify-content: $justify;
 	gap: $gap;
 }
 
-@mixin space-between() {
-	@include flex(row, center, space-between, 0px);
+@mixin flex-col($align: center, $justify: center, $gap: 1.2rem) {
+	display: flex;
+	flex-direction: column;
+	align-items: $align;
+	justify-content: $justify;
+	gap: $gap;
 }
 
-@mixin column-center($justify: center, $gap: 10px) {
-	@include flex(column, center, $justify, $gap);
+@mixin space-between($align: center) {
+	@include flex-row($align, space-between, 1rem);
 }
 
-@mixin centered() {
-	@include flex(row, center, center);
+//Space mixins
+
+@mixin mx($xl, $xr) {
+	margin-left: $xl;
+	margin-right: $xr;
 }
 
-//space
-
-@mixin mx($x) {
-	margin-left: $x;
-	margin-right: $x;
+@mixin my($yt, $yb) {
+	margin-top: $yt;
+	margin-bottom: $yb;
 }
 
-@mixin my($y) {
-	margin-top: $y;
-	margin-bottom: $y;
+@mixin px($xl, $xr) {
+	padding-left: $xl;
+	padding-right: $xr;
 }
 
-@mixin px($x) {
-	padding-left: $x;
-	padding-right: $x;
+@mixin py($yt, $yb) {
+	padding-top: $yt;
+	padding-bottom: $yb;
 }
 
-@mixin py($y) {
-	padding-top: $y;
-	padding-bottom: $y;
+//Image mixins
+
+@mixin icon($size: 2.25rem) {
+	width: $size;
+	height: $size;
 }
 
-//image
-
-@mixin icon($height: 10px, $width: 10px) {
-	width: $width;
-	height: $height;
-}
-
-@mixin container-image($height: 10px, $width: 10px) {
+@mixin fit-image($width: 22rem, $height: 22rem) {
 	width: $width;
 	height: $height;
 	object-fit: cover;
-	@include transition();
-	&:hover {
-		transform: scale(1.05);
-	}
 }
 
 @mixin width-image($width: 100%) {
-	width: $width;
+	max-width: $width;
 	object-fit: cover;
-	@include transition();
-	&:hover {
-		transform: scale(1.05);
-	}
 }
 
-@mixin image-scaled($height: 10px, $width: 10px) {
-	width: $width;
-	height: $height;
-	object-fit: cover;
-	@include transition();
-	&:hover {
-		transform: scale(1.05);
-	}
-}
+// Utils mixins
 
-//utilities
+@mixin link($color: $white, $hover: $red) {
+	@include transition;
 
-@mixin button($bg: $blue, $color: $text_white, $px: 3rem, $py: 1rem) {
-	@include px($px);
-	@include py($py);
-	cursor: pointer;
 	color: $color;
-	background-color: $bg;
-	@include rounded(15px);
-	outline: none;
-	@include transition();
-	&:hover {
-		color: $background;
-		background-color: $grey;
-	}
-}
-
-@mixin link($color: $text_white, $hover: $red) {
 	cursor: pointer;
-	color: $color;
-	@include transition();
+
 	&:hover {
 		color: $hover;
 	}
 }
 
-@mixin link-icon($sat: $text_white, $hover-sat: $red) {
-	color: $color;
-	@include transition();
+@mixin scaled($scale: 1.05) {
+	@include transition;
+
 	&:hover {
-		color: $hover;
+		transform: scale($scale);
 	}
 }
 
-@mixin transition() {
-	transition: all 200ms ease-in-out;
+@mixin transition($time: 0.2s) {
+	transition: all $time ease-in-out;
 }
 
-@mixin rounded($radius: 50px) {
-	border-radius: $radius;
-}
+// Media queries mixins
 
-@mixin shadow-md {
-	box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-}
-
-@mixin shadow-lg {
-	box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-}
-
-@mixin shadow-xl {
-	box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1),
-		0 8px 10px -6px rgb(0 0 0 / 0.1);
+@mixin response($screen) {
+	@if ($screen == xl) {
+		@media (max-width: map-get($breakpoints, "largest")) {
+			@content;
+		}
+	} @else if ($screen == lg) {
+		@media (max-width: map-get($breakpoints, "large")) {
+			@content;
+		}
+	} @else if($screen == md) {
+		@media (max-width: map-get($breakpoints, "medium")) {
+			@content;
+		}
+	} @else if($screen == sm) {
+		@media (max-width: map-get($breakpoints, "small")) {
+			@content;
+		}
+	} @else if($screen == xs) {
+		@media (max-width: map-get($breakpoints, "smallest")) {
+			@content;
+		}
+	}
 }

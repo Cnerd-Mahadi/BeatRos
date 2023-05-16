@@ -1,24 +1,19 @@
-import { FaShoppingCart, FaUserAlt } from "react-icons/fa";
-import styles from "../scss/components/Header.module.scss";
+import { FaBars, FaShoppingCart, FaUserAlt } from "react-icons/fa";
 
 export const Header = () => {
 	return (
-		<div className={styles.nav_container}>
-			<h3>
-				<span>M</span>a<span>n</span>ia<span>c</span>
-			</h3>
-			<div className={styles.nav_links}>
+		<nav className="header__nav">
+			<h2 className="logo">
+				beat-<span>Ros</span>
+			</h2>
+			<div className="nav-items header__nav-items">
 				<a href="#">Home</a>
 				<a href="#">Shop</a>
 				<a href="#">Blog</a>
-				<FaShoppingCart className={styles.nav_cart} />
-				<FaUserAlt className={styles.nav_user} />
+				<FaShoppingCart className="header__cart" />
+				<FaUserAlt className="header__user" />
 			</div>
-		</div>
+			<FaBars className="header__bar-menu" />
+		</nav>
 	);
 };
-
-{
-	/* <FaSearch className={styles.action_item} />
-				<FaUser className={styles.action_item} /> */
-}

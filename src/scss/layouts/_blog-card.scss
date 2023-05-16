@@ -1,0 +1,52 @@
+.blog-card {
+	& > img {
+		@include fit-image(100%, 22rem);
+		margin-bottom: 1rem;
+		border-radius: 1rem;
+	}
+
+	&__info {
+		@include flex-row(center, start, 0.75rem);
+		margin-bottom: 1.2rem;
+	}
+
+	&__info-date {
+		color: $grey;
+	}
+
+	& > h3 {
+		margin-bottom: 1rem;
+		text-align: justify;
+	}
+
+	&__hook {
+		margin-bottom: 1.5rem;
+		font-weight: 500;
+		color: $grey;
+		font-size: 1.4rem;
+		text-align: justify;
+	}
+
+	&__author-image {
+		@include flex-row(start, start, 1.25rem);
+
+		& > img {
+			@include icon(4rem);
+			object-fit: cover;
+			border-radius: 50%;
+		}
+	}
+
+	&__author-info {
+		& > h5 {
+			margin-bottom: 0.3rem;
+			font-size: 1.5rem;
+		}
+
+		& > p {
+			font-size: 1.2rem;
+			color: $grey;
+			font-weight: 600;
+		}
+	}
+}

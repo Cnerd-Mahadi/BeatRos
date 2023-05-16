@@ -1,0 +1,40 @@
+.container {
+	margin: 15rem 3rem;
+
+	@include response(md) {
+		margin: 12rem 2rem;
+	}
+}
+
+.logo {
+	span {
+		color: $red;
+	}
+
+	@include response(sm) {
+		font-size: 2.7rem;
+	}
+}
+
+.nav-items {
+	@include flex-row($gap: 3.5rem);
+	& > a {
+		@include link();
+	}
+}
+
+.ratings {
+	@include flex-row(start, start, 0.25rem);
+
+	& > img {
+		@include icon(1.35rem);
+	}
+}
+
+#App {
+	max-width: 140rem;
+	background-color: $background;
+	margin: 0 auto;
+	min-height: 100vh;
+	overflow-x: hidden;
+}
