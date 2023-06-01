@@ -3,7 +3,7 @@
 	flex-wrap: wrap;
 	width: 90%;
 	max-width: 90rem;
-	margin: auto;
+	margin: 10rem auto;
 	padding: 10rem 8rem;
 	background-color: $container_deep;
 	border-radius: 1.25rem;
@@ -45,7 +45,8 @@
 
 	&__agreement {
 		@include flex-row(center, start, 1.5rem);
-		margin-bottom: 3rem;
+		margin-top: 3rem;
+		margin-bottom: 4rem;
 
 		@include response(md) {
 			justify-content: center;

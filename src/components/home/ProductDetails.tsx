@@ -18,7 +18,7 @@ export const ProductDetails = () => {
 	const ratings = product ? getRatings(product.rateCount) : getRatings(0);
 
 	return product ? (
-		<main className="product-details">
+		<main className="container product-details">
 			<div className="product-details__product">
 				<div className="product-details__display">
 					<img src={product.images[displayedImage]} alt="" />

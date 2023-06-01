@@ -8,7 +8,7 @@ import {
 	FaTwitter,
 	FaUser,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { FormInput } from "./../common/FormInput";
 import { FormDataType } from "./SignUp";
@@ -72,12 +72,14 @@ export const SignIn = () => {
 					<FaTwitter className="signin__social" />
 					<FaGoogle className="signin__social" />
 				</div>
-				<a className="signin__small">Create an account</a>
+				<Link to="/signup" className="signin__small">
+					Create an account
+				</Link>
 			</div>
 
 			<div className="signin__sidebar">
 				<img src="/images/signin.png" alt="" />
-				<a>Create an account</a>
+				<Link to="/signup">Create an account</Link>
 			</div>
 		</main>
 	);

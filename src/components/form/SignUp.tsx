@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { FaEnvelope, FaLock, FaShieldAlt, FaUser } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { FormInput } from "./../common/FormInput";
 
@@ -71,12 +71,14 @@ export const SignUp = () => {
 				</div>
 
 				<input type="submit" value="SignUp" className="button" />
-				{/* <a className="signup__small">I am already signed in</a> */}
+				<Link to="/signin" className="signup__small">
+					I am already signed in
+				</Link>
 			</form>
 
 			<div className="signup__sidebar">
 				<img src="/images/signup.png" alt="" />
-				<a>I am already signed in</a>
+				<Link to="/signin">I am already signed in</Link>
 			</div>
 		</main>
 	);

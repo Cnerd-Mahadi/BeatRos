@@ -4,7 +4,7 @@
 	flex-wrap: wrap;
 	width: 90%;
 	max-width: 85rem;
-	margin: 2rem auto;
+	margin: 10rem auto;
 	padding: 10rem 7rem;
 	background-color: $container_deep;
 	border-radius: 2rem;
@@ -73,6 +73,7 @@
 		@include flex-row(center, start, 1.25rem);
 		flex-wrap: wrap;
 		margin-bottom: 6rem;
+		margin-top: 5rem;
 
 		@include response(sm) {
 			justify-content: center;
@@ -132,6 +133,7 @@
 
 	@include response(sm) {
 		width: 100%;
+		margin-bottom: 2rem;
 	}
 }
 

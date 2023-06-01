@@ -42,6 +42,18 @@ export const NavMenuMobile = () => {
 							Cart {cart.length > 0 && <span>({cart.length})</span>}
 						</div>
 					</NavLink>
+					<NavLink
+						to="/signin"
+						className={({ isActive }) => (isActive ? "active" : "link--tag")}
+						onClick={() => handleMenuOff()}>
+						SignIn
+					</NavLink>
+					<NavLink
+						to="/signup"
+						className={({ isActive }) => (isActive ? "active" : "link--tag")}
+						onClick={() => handleMenuOff()}>
+						SignUp
+					</NavLink>
 				</div>
 			</div>
 		</>
