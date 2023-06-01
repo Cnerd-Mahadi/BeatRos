@@ -1,81 +1,94 @@
-import image1 from "../../images/products/jbl660nc-1.png";
-import image2 from "../../images/products/jbl660nc-2.png";
-import image3 from "../../images/products/jbl660nc-3.png";
-import image4 from "../../images/products/jbl660nc-4.png";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useProduct } from "../../hooks/useProduct";
+import { getProduct } from "../../serivces/productManager";
+import { handleAddToCart } from "../../serivces/transactionManager";
+import { getRatings } from "../../utilities/common";
+import { ElementError } from "../common/ElementError";
 
 export const ProductDetails = () => {
-	return (
+	const { id } = useParams();
+	const products = useProduct();
+	const dispatch = useDispatch();
+	const [displayedImage, setDisplayedImage] = useState(0);
+
+	const productId = id ? parseInt(id) : 0;
+	const product = getProduct(products, productId);
+	const ratings = product ? getRatings(product.rateCount) : getRatings(0);
+
+	return product ? (
 		<main className="product-details">
 			<div className="product-details__product">
 				<div className="product-details__display">
-					<img src={image1} alt="" />
+					<img src={product.images[displayedImage]} alt="" />
 				</div>
 				<div className="product-details__images">
-					<div className="product-details__image">
-						<img src={image1} alt="" />
-					</div>
-					<div className="product-details__image">
-						<img src={image2} alt="" />
-					</div>
-					<div className="product-details__image">
-						<img src={image3} alt="" />
-					</div>
-					<div className="product-details__image">
-						<img src={image4} alt="" />
-					</div>
+					{product.images.map((image, index) => {
+						return (
+							<div
+								onClick={() => {
+									setDisplayedImage(index);
+								}}
+								key={index}
+								className="product-details__image">
+								<img src={image} alt="" />
+							</div>
+						);
+					})}
 				</div>
 			</div>
 			<div className="product-details__details">
-				<h2>JBL Live 660NC</h2>
-				<h1 className="product-details__price">BDT. {9999}</h1>
-				<form action="#">
-					<input type="text" value={1} />
-					<button className="button">Add To Cart</button>
-				</form>
+				<h2>{product.title}</h2>
+				<h1 className="product-details__price">BDT. {product.price}</h1>
+				<div className="product-details__form">
+					<p>1</p>
+					<button
+						className="button"
+						onClick={() => {
+							handleAddToCart(product, dispatch);
+						}}>
+						Add To Cart
+					</button>
+				</div>
 				<div className="product-details__info">
 					<h2>Product Details</h2>
 					<p>
-						Brand: <span>JBL</span>
+						Brand: <span>{product.brand}</span>
 					</p>
 					<p>
-						Info: <span>Wireless Over-Ear NC Headphones</span>
+						Info: <span>{product.info}</span>
 					</p>
 					<p>
-						Category: <span>Headphones</span>
+						Category: <span>{product.category}</span>
 					</p>
 					<p>
-						Type: <span>Over Ear</span>
+						Type: <span>{product.type}</span>
 					</p>
 					<p>
-						Connectivity: <span>Wireless</span>
+						Connectivity: <span>{product.connectivity}</span>
 					</p>
 					<p>
-						Ratings: <span>1234</span>
+						Quantity: <span>{product.quantity}</span>
+					</p>
+					<p>
+						Ratings: <span>{product.ratings}</span>
 					</p>
 					<div className="ratings product-details__ratings">
-						<img
-							src="https://cdn-icons-png.flaticon.com/512/2107/2107957.png"
-							alt="rating"
-						/>
-						<img
-							src="https://cdn-icons-png.flaticon.com/512/2107/2107957.png"
-							alt="rating"
-						/>
-						<img
-							src="https://cdn-icons-png.flaticon.com/512/2107/2107957.png"
-							alt="rating"
-						/>
-						<img
-							src="https://cdn-icons-png.flaticon.com/512/2107/2107957.png"
-							alt="rating"
-						/>
-						<img
-							src="https://cdn-icons-png.flaticon.com/512/2107/2107957.png"
-							alt="rating"
-						/>
+						{ratings.map((item) => {
+							return (
+								<img
+									key={item}
+									src="https://cdn-icons-png.flaticon.com/512/2107/2107957.png"
+									alt="rating"
+								/>
+							);
+						})}
 					</div>
 				</div>
 			</div>
 		</main>
+	) : (
+		<ElementError />
 	);
 };

@@ -1,15 +1,13 @@
 .home {
+	&__mobile-menu {
+		position: absolute;
+	}
+
 	&__featured {
 		& > h2 {
 			margin-bottom: 4rem;
 			text-align: center;
 		}
-	}
-
-	&__featured-products {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-		gap: 10rem;
 	}
 
 	&__top-products {
@@ -24,4 +22,13 @@
 		row-gap: 2.25rem;
 		margin-bottom: 4.25rem;
 	}
+}
+
+.carousel-status {
+	display: none;
+}
+
+.error-text {
+	color: $red;
+	font-weight: 600;
 }

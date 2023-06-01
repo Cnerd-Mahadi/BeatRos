@@ -1,15 +1,17 @@
-import { ReactNode } from "react";
+import { Path, UseFormRegister } from "react-hook-form";
+import { FormDataType } from "../form/SignUp";
 
 interface Icon {
-	children: ReactNode;
-	type: string;
+	label: Path<FormDataType>;
+	register: UseFormRegister<FormDataType>;
+	children: React.ReactNode;
 }
 
-export const FormInput = ({ children, type }: Icon) => {
+export const FormInput = ({ label, register, children }: Icon) => {
 	return (
 		<div className="input--form">
 			{children}
-			<input type={type} />
+			<input {...register(label)} />
 		</div>
 	);
 };

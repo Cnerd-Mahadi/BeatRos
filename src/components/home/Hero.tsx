@@ -1,19 +1,32 @@
-import hero from "../../images/products/sonyXb910n-1.png";
+import { Link } from "react-router-dom";
+import { useSwiper } from "swiper/react";
+import { productType } from "../../data/products";
 
-export const Hero = () => {
+type HeroProps = {
+	product: productType[0];
+};
+
+export const Hero = ({ product }: HeroProps) => {
+	const swiper = useSwiper();
+
 	return (
 		<>
-			<section className="container hero">
+			<section
+				className="container hero"
+				onMouseEnter={() => swiper.autoplay.stop()}
+				onMouseLeave={() => swiper.autoplay.start()}>
 				<div className="hero__image">
-					<img src={hero} alt="sony" />
+					<img src={product.heroImage} alt="sony" />
 				</div>
 				<div className="hero__text">
-					<h3>Sony WH-XB910N</h3>
+					<h3>{product.title}</h3>
 					<h1 className="hero__tag">
 						Listen to your favourite <br /> music in style.
 					</h1>
-					<h4 className="hero__price">BDT. 12,000</h4>
-					<button className="button">Shop now</button>
+					<h4 className="hero__price">BDT. {product.price}</h4>
+					<Link to={`/product/${product.id}`}>
+						<button className="button">Shop now</button>
+					</Link>
 				</div>
 			</section>
 		</>

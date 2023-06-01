@@ -72,29 +72,33 @@
 			font-size: 2rem;
 			margin-bottom: 1rem;
 		}
+	}
 
-		& > form {
-			@include flex-row($gap: 1.75rem, $justify: start);
-			height: 4rem;
-			width: 60%;
-			margin-top: 2.5rem;
+	&__form {
+		@include flex-row($gap: 1.75rem, $justify: start);
+		height: 4rem;
+		width: 60%;
+		margin-top: 2.5rem;
 
-			& > input {
-				height: 100%;
-				width: 20%;
-				padding-left: 1rem;
-				color: $background;
-				font-size: 2rem;
-				outline: none;
-				border-radius: 0.5rem;
-			}
+		& > p {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+			width: 20%;
+			background-color: white;
+			color: $background;
+			font-size: 2rem;
+			font-weight: 700;
+			outline: none;
+			border-radius: 0.5rem;
+		}
 
-			& > button {
-				height: 100%;
-				width: 70%;
-				padding: 0 0;
-				border-radius: 0.5rem;
-			}
+		& > button {
+			height: 100%;
+			width: 80%;
+			padding: 0 0;
+			border-radius: 0.5rem;
 		}
 	}
 

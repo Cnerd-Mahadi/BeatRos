@@ -60,6 +60,10 @@
 			justify-content: center;
 		}
 
+		& > input[type="checkbox"] {
+			accent-color: $container_bright;
+		}
+
 		& > h5 {
 			display: inline;
 		}
@@ -129,4 +133,8 @@
 	@include response(sm) {
 		width: 100%;
 	}
+}
+
+.icon-validation {
+	color: $red;
 }

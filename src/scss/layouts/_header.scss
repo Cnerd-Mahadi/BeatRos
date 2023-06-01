@@ -8,14 +8,24 @@
 	}
 
 	&__nav-items {
-		@include response(md) {
+		@include response(sm) {
 			display: none;
 		}
 	}
 
 	&__cart {
-		@include icon();
-		@include link();
+		position: relative;
+		& > h4 {
+			position: absolute;
+			top: -1rem;
+			right: -1.4rem;
+			color: $orange;
+			font-weight: 700;
+		}
+
+		&-icon {
+			@include icon();
+		}
 	}
 
 	&__user {
@@ -27,9 +37,14 @@
 	&__bar-menu {
 		@include icon();
 		display: none;
+		cursor: pointer;
 
-		@include response(md) {
+		@include response(sm) {
 			display: flex;
 		}
 	}
+}
+
+.active {
+	color: $red;
 }

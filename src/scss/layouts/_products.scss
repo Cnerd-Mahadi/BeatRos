@@ -1,5 +1,6 @@
 .featured-product {
 	@include flex-col(center, center, 2rem);
+	color: $white;
 
 	& > h5 {
 		color: $grey;
@@ -9,8 +10,8 @@
 	& > img {
 		@include width-image();
 
-		@include response(sm) {
-			width: 70%;
+		@include response(lg) {
+			width: 50%;
 		}
 	}
 }
@@ -92,8 +93,12 @@
 
 .blogs {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(20rem, 30rem));
+	grid-template-columns: repeat(auto-fit, minmax(20rem, 38rem));
 	column-gap: 3rem;
 	row-gap: 6rem;
 	justify-content: space-around;
+}
+
+.product-added {
+	color: $green;
 }

@@ -30,6 +30,17 @@
 		}
 	}
 
+	&__empty {
+		@include flex-col(center, center, 2.5rem);
+		height: 20rem;
+
+		& > h2 {
+			color: $grey;
+			letter-spacing: 0.2rem;
+			font-weight: 600;
+		}
+	}
+
 	&__order-summary {
 		width: 35%;
 		text-align: center;

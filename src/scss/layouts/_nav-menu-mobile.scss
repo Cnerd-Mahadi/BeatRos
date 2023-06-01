@@ -1,0 +1,17 @@
+.nav-menu-mobile {
+	background-color: $container_deep;
+	height: 70vh;
+	padding: 10rem;
+
+	&__links {
+		flex-direction: column;
+	}
+
+	&__cart > span {
+		color: $orange;
+	}
+}
+
+.menu-off {
+	display: none;
+}

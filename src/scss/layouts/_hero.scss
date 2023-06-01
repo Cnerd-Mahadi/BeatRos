@@ -51,6 +51,7 @@
 
 	&__tag {
 		color: $grey;
+		text-align: left;
 
 		@include response(lg) {
 			font-size: 3.45rem;

@@ -7,6 +7,8 @@
 }
 
 .logo {
+	color: $white;
+
 	span {
 		color: $red;
 	}
@@ -18,8 +20,10 @@
 
 .nav-items {
 	@include flex-row($gap: 3.5rem);
-	& > a {
+
+	& > .link--tag {
 		@include link();
+		text-decoration: none;
 	}
 }
 
@@ -37,4 +41,29 @@
 	margin: 0 auto;
 	min-height: 100vh;
 	overflow-x: hidden;
+}
+
+.error-element {
+	@include flex-col();
+	height: 100vh;
+
+	& > h1 {
+		max-width: 70rem;
+		text-align: center;
+		line-height: 2;
+		color: coral;
+
+		@include response(sm) {
+			font-size: 2.5rem;
+		}
+
+		& > span {
+			color: $red;
+		}
+	}
+
+	p {
+		color: $background;
+		font-weight: 600;
+	}
 }
