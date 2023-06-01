@@ -1,6 +1,6 @@
 .nav-menu-mobile {
 	background-color: $container_deep;
-	height: 70vh;
+	height: 75vh;
 	padding: 10rem;
 
 	&__links {
@@ -9,6 +9,11 @@
 
 	&__cart > span {
 		color: $orange;
+	}
+
+	&__logout {
+		font-weight: 600;
+		font-size: 1.6rem;
 	}
 }
 

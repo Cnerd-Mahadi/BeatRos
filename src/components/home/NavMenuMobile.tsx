@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { overlayAction } from "../../store/overlaySlice";
 import { RootState } from "../../store/store";
 
@@ -7,6 +7,7 @@ export const NavMenuMobile = () => {
 	const menu = useSelector((state: RootState) => state.overlay.menu);
 	const cart = useSelector((state: RootState) => state.cart);
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	const handleMenuOff = () => {
 		dispatch(overlayAction.menuOff());
@@ -54,6 +55,15 @@ export const NavMenuMobile = () => {
 						onClick={() => handleMenuOff()}>
 						SignUp
 					</NavLink>
+					<div
+						className="link--tag nav-menu-mobile__logout"
+						onClick={() => {
+							handleMenuOff();
+							localStorage.removeItem("username");
+							navigate("/");
+						}}>
+						LogOut
+					</div>
 				</div>
 			</div>
 		</>
