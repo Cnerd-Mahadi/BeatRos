@@ -43,10 +43,6 @@ export const Router = createBrowserRouter([
 				element: <BlogDetails />,
 			},
 			{
-				path: "/signin",
-				element: <SignIn />,
-			},
-			{
 				path: "/signup",
 				element: <SignUp />,
 			},
