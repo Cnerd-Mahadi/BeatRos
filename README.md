@@ -1,10 +1,13 @@
 # Welcome to beatRos 
 
-beat-Ros is an e-commerce app focused only on air buds and headphones.
+An ecommerce platform providing earbuds of different price range and different brands. A responsive web application.
 
-## Tech Stack
-Vite, React, Redux, React Router v9, Sass, Typescript
+## Technologies
+React, Redux, TypeScript, ReactQuery, Vite, Sass
 
-## Project live on
+## Features
+🚀 Add to Cart  Service
+🚀 Products filtering based on price range, brands or categories
+🚀 Products sorting based on different criteria like top products, featured and so on 
+🚀 Blog section added providing informative and engaging content on earbuds
 
-[beatros.vercel.app](https://beatros.vercel.app/)
