@@ -33,7 +33,7 @@ export const Header = () => {
 			<section className="header__nav">
 				<Link to="/">
 					<h2 className="logo">
-						beat-<span>Ros</span>
+						Beat<span>Ros</span>
 					</h2>
 				</Link>
 				<nav className="nav-items header__nav-items">
