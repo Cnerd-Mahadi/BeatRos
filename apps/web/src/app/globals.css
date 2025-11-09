@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	* {
+		@apply transition-colors duration-200;
+	}
+
+	html {
+		scroll-behavior: auto;
+		scroll-padding-top: 4rem;
+	}
+
+	body {
+		font-family: "Inter", sans-serif;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	/* Optimize for smooth scrolling and animations */
+	@media (prefers-reduced-motion: no-preference) {
+		* {
+			scroll-behavior: auto;
+		}
+	}
+}
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+	:root {
+		--background: 150 25% 97%;
+		--foreground: 220 40% 10%;
+
+		--card: 0 0% 100%;
+		--card-foreground: 220 40% 10%;
+
+		--popover: 0 0% 100%;
+		--popover-foreground: 220 40% 10%;
+
+		--primary: 217 91% 60%;
+		--primary-foreground: 0 0% 100%;
+
+		--secondary: 214 32% 91%;
+		--secondary-foreground: 220 40% 10%;
+
+		--muted: 210 20% 94%;
+		--muted-foreground: 220 13% 46%;
+
+		--accent: 217 91% 60%;
+		--accent-foreground: 0 0% 100%;
+
+		--destructive: 0 84% 60%;
+		--destructive-foreground: 0 0% 98%;
+
+		--border: 150 15% 88%;
+		--input: 150 10% 92%;
+		--ring: 217 91% 60%;
+
+		--radius: 0.75rem;
+	}
+
+	.dark {
+		--background: 220 26% 14%;
+		--foreground: 150 10% 90%;
+
+		--card: 220 20% 18%;
+		--card-foreground: 150 10% 90%;
+
+		--popover: 220 20% 18%;
+		--popover-foreground: 150 10% 90%;
+
+		--primary: 230 90% 65%;
+		--primary-foreground: 0 0% 100%;
+
+		--secondary: 217 20% 25%;
+		--secondary-foreground: 210 20% 90%;
+
+		--muted: 217 15% 25%;
+		--muted-foreground: 215 15% 65%;
+
+		--accent: 230 90% 65%;
+		--accent-foreground: 0 0% 100%;
+
+		--destructive: 0 63% 31%;
+		--destructive-foreground: 150 10% 90%;
+
+		--border: 220 15% 22%;
+		--input: 220 15% 22%;
+		--ring: 230 90% 65%;
+	}
+}
+
+@layer base {
+	* {
+		@apply border-border;
+	}
+
+	body {
+		@apply bg-background text-foreground;
+	}
+}
+
+/* Prevent jarring transitions during theme change */
+.theme-transition * {
+	transition: none !important;
+}

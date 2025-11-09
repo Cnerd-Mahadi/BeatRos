@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum InventoryStatus {
+  ACTIVE
+  INACTIVE
+  OUT_OF_STOCK
+}
+
+model Inventory {
+  id                String          @id @default(cuid())
+  total_quantity    Int
+  reserved_quantity Int             @default(0)
+  status            InventoryStatus @default(ACTIVE)
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+}

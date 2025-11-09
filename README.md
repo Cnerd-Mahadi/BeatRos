@@ -1,16 +1,3 @@
-# Welcome to beatRos 
+# Turborepo minimal starter with apps(nextJS, express) and service
 
-An ecommerce platform providing earbuds of different price range and different brands. A responsive web application.
-
-## Technologies
-React, Redux, TypeScript, ReactQuery, Vite, Sass
-
-## Features
-🚀 Add to Cart  Service
-
-🚀 Products filtering based on price range, brands or categories
-
-🚀 Products sorting based on different criteria like top products, featured and so on 
-
-🚀 Blog section added providing informative and engaging content on earbuds
-
+A very simple and minimal turborepo starter template with nextJS,express app and service with a basic setup of needed tsconfigs, eslints

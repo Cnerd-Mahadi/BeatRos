@@ -1,0 +1,5 @@
+- create a product
+- update the product
+- delete the product
+- fetch a product
+- fetch all products
