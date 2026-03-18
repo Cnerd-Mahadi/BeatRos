@@ -1,3 +1,4 @@
+import logger from "@shared/src/logger";
 import { HttpError } from "@shared/src/response";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -23,8 +24,10 @@ app.get("/health", (_req, res) => {
 	res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+app.use("/api/inventory", inventoryRouter);
+
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
-	console.error(err.message);
+	logger.error(err.message, { name: err.name, details: err.stack });
 	if (err instanceof HttpError) {
 		res.status(err.status).json({ error: err.message });
 	} else {
@@ -34,8 +37,6 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 		});
 	}
 });
-
-app.use("/api/inventory", inventoryRouter);
 
 app.listen(_env.PORT, () => {
 	console.log(`Inventory service running at http://localhost:${_env.PORT}`);

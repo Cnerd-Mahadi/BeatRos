@@ -4,7 +4,7 @@ import type { NextFunction, Request, Response } from "express";
 import z from "zod";
 import { _env } from "../env";
 import { api } from "../lib/axios";
-import { fetchCartData } from "../services/cartService";
+import { fetchCartData, getCurrentSession } from "../services/cartService";
 import { createLineItems } from "../services/orderService";
 
 export const createOrder = async (
@@ -13,14 +13,16 @@ export const createOrder = async (
 	next: NextFunction
 ) => {
 	try {
-		const addressSchema = z.string().min(1);
-		const parsed = addressSchema.safeParse(req.body);
+		const bodySchema = z.object({
+			address: z.string().min(1),
+			email: z.string().email(),
+		});
+		const parsed = bodySchema.safeParse(req.body);
 		if (!parsed.success) {
 			return res
 				.status(STATUS.BAD_REQUEST)
 				.json({ error: parsed.error.message });
 		}
-		const address = parsed.data;
 
 		const { products, cartItems } = await fetchCartData(req);
 		const lineItems = createLineItems(cartItems, products);
@@ -31,11 +33,16 @@ export const createOrder = async (
 				.json({ error: "Nothing found on the lineItems" });
 		}
 
+		const session = getCurrentSession(req);
+
 		const response = await api.post(
 			`${_env.ORDER_SERVICE_URL}/api/order/create`,
 			{
+				userId: req.user?.id,
+				email: parsed.data.email,
+				cartId: `cart:${session?.type}:${session?.id}`,
 				lineItems,
-				shippingAddress: address,
+				shippingAddress: parsed.data.address,
 			}
 		);
 

@@ -8,7 +8,9 @@ export const getProducts = async (
 	next: NextFunction
 ) => {
 	try {
-		const response = await api.get(`${_env.PRODUCT_SERVICE_URL}/api/product`);
+		const response = await api.get(`${_env.PRODUCT_SERVICE_URL}/api/product`, {
+			params: req.query,
+		});
 		return res.status(response.status).json(response.data);
 	} catch (error) {
 		next(error);

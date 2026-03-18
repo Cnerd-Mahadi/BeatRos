@@ -2,148 +2,202 @@
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
+import ProductDetailSkeleton from "@/components/ProductDetailSkeleton";
 import { Button } from "@/components/ui/button";
-import { products } from "@/data/products";
-import { useCart } from "@/hooks/use-cart";
+import { addToCart } from "@/services/cart";
+import { getProduct } from "@/services/product";
+import { productDetailSchema } from "@/types/product";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ChevronRight, Star } from "lucide-react";
+import {
+	Check,
+	ChevronRight,
+	Loader2,
+	ShoppingCart,
+	Star,
+	Zap,
+} from "lucide-react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 export default function ProductDetail() {
 	const params = useParams();
+	const router = useRouter();
 	const id = params.id as string;
-	const product = products.find((p) => p.id === id);
-	const [selectedImage, setSelectedImage] = useState(0);
-	const { addItem } = useCart();
 
-	if (!product) {
-		return <div>Product not found</div>;
+	const { isPending, mutate } = useMutation({
+		mutationKey: [`product/${id}/addtocart`],
+		mutationFn: async () => addToCart(id, 1),
+		onSuccess: () => toast.success("Added to cart"),
+		onError: () => toast.error("Failed to add to cart"),
+	});
+
+	const { isLoading, data } = useQuery({
+		queryKey: [`product/${id}`],
+		queryFn: async () => await getProduct(id),
+	});
+
+	if (isLoading) {
+		return (
+			<div className="flex flex-col w-full min-h-screen">
+				<Header />
+				<ProductDetailSkeleton />
+				<Footer />
+			</div>
+		);
 	}
 
-	const images = product.images || [product.image];
+	const parsed = productDetailSchema.safeParse(data.data);
+	if (!parsed.success) throw new Error("No product found");
+	const product = parsed.data;
 
 	const handleAddToCart = () => {
-		addItem({
-			id: product.id,
-			name: product.name,
-			price: product.price,
-			image: product.image,
-		});
-		toast.success("Added to cart!");
+		mutate();
 	};
 
+	const handleBuyNow = () => {
+		mutate(undefined, {
+			onSuccess: () => router.push("/cart"),
+		});
+	};
+
+	const ratingValue = product.rating / 100;
+
 	return (
-		<div className="flex flex-col w-full min-h-screen overflow-x-hidden">
+		<div className="flex flex-col w-full min-h-screen">
 			<Header />
-			<main className="flex flex-1 justify-center px-4 sm:px-6 lg:px-8 py-8">
+			<main className="flex flex-1 justify-center px-6 sm:px-8 lg:px-12 py-10">
 				<div className="w-full max-w-6xl">
-					<div className="flex items-center space-x-2 mb-6 font-medium text-muted-foreground text-sm">
-						<Link href="/" className="hover:text-primary">
+					<nav className="flex items-center gap-1.5 mb-8 text-muted-foreground text-sm font-medium">
+						<Link
+							href="/"
+							className="hover:text-primary transition-colors cursor-pointer">
 							Home
 						</Link>
-						<ChevronRight className="w-4 h-4" />
-						<Link href="/products" className="hover:text-primary">
-							Products
+						<ChevronRight className="w-3.5 h-3.5" />
+						<Link
+							href="/products"
+							className="hover:text-primary transition-colors cursor-pointer">
+							Shop
 						</Link>
-						<ChevronRight className="w-4 h-4" />
-						<span className="text-foreground">{product.name}</span>
-					</div>
+						<ChevronRight className="w-3.5 h-3.5" />
+						<span className="text-foreground">
+							{product.title}
+						</span>
+					</nav>
 
 					<motion.div
-						className="gap-8 grid grid-cols-1 lg:grid-cols-2"
+						className="gap-12 lg:gap-16 grid grid-cols-1 lg:grid-cols-2"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
-						transition={{ duration: 0.4, ease: "easeOut" }}>
+						transition={{
+							duration: 0.4,
+							ease: [0.16, 1, 0.3, 1],
+						}}>
 						<motion.div
-							className="gap-4 grid grid-cols-4 grid-rows-2"
-							initial={{ opacity: 0, y: 20 }}
+							initial={{ opacity: 0, y: 16 }}
 							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}>
-							<div
-								className="col-span-4 row-span-2 bg-cover bg-center rounded-lg h-[450px] overflow-hidden transition-opacity duration-300 will-change-transform"
-								style={{ backgroundImage: `url(${images[selectedImage]})` }}
-							/>
-							{images.length > 1 &&
-								images
-									.slice(1)
-									.map((img, idx) => (
-										<motion.div
-											key={idx}
-											whileHover={{ scale: 1.05 }}
-											whileTap={{ scale: 0.95 }}
-											transition={{ duration: 0.2 }}
-											className="bg-cover bg-center rounded-lg h-[100px] overflow-hidden cursor-pointer"
-											style={{ backgroundImage: `url(${img})` }}
-											onClick={() => setSelectedImage(idx + 1)}
-										/>
-									))}
+							transition={{
+								duration: 0.5,
+								ease: [0.16, 1, 0.3, 1],
+								delay: 0.1,
+							}}>
+							<div className="bg-muted/50 rounded-2xl aspect-square overflow-hidden">
+								<img
+									src={product.imageUrl}
+									alt={product.title}
+									className="w-full h-full object-cover object-center"
+								/>
+							</div>
 						</motion.div>
 
 						<motion.div
-							className="flex flex-col space-y-6"
-							initial={{ opacity: 0, y: 20 }}
+							className="flex flex-col"
+							initial={{ opacity: 0, y: 16 }}
 							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}>
-							<h1 className="font-bold text-3xl">{product.name}</h1>
+							transition={{
+								duration: 0.5,
+								ease: [0.16, 1, 0.3, 1],
+								delay: 0.2,
+							}}>
+							<p className="text-sm uppercase tracking-[0.12em] text-primary font-semibold mb-3">
+								{product.brand.name}
+							</p>
+							<h1 className="text-heading-lg tracking-tight">
+								{product.title}
+							</h1>
 
-							<div className="flex flex-wrap items-center gap-x-8 gap-y-4">
-								<div className="flex flex-col">
-									<p className="font-black text-5xl">{product.rating}</p>
-									<div className="flex items-center text-yellow-400">
-										{Array.from({ length: 5 }).map((_, i) => (
-											<Star
-												key={i}
-												className="w-5 h-5"
-												fill={
-													i < Math.floor(product.rating)
-														? "currentColor"
-														: "none"
-												}
-											/>
-										))}
-									</div>
+							<div className="flex items-center gap-3 mt-4">
+								<div className="flex items-center gap-0.5 text-amber-500">
+									{Array.from({ length: 5 }).map((_, i) => (
+										<Star
+											key={i}
+											className="w-4 h-4"
+											fill={
+												i < Math.floor(ratingValue)
+													? "currentColor"
+													: "none"
+											}
+										/>
+									))}
 								</div>
-								<div>
-									<p className="text-muted-foreground text-sm">
-										{product.reviews} reviews
-									</p>
-								</div>
+								<span className="text-sm font-medium text-foreground tabular-nums">
+									{ratingValue.toFixed(1)}
+								</span>
 							</div>
 
-							<p className="font-bold text-primary text-5xl">
-								${product.price.toFixed(2)}
+							<p className="font-heading font-bold text-foreground text-3xl mt-6 tabular-nums">
+								${(product.priceInCents / 100).toFixed(2)}
 							</p>
 
-							<p className="text-muted-foreground">{product.description}</p>
+							<p className="text-foreground text-base leading-relaxed mt-6">
+								{product.description}
+							</p>
 
-							{product.features && (
-								<div>
-									<h3 className="mb-3 font-semibold">Key Features:</h3>
-									<ul className="space-y-2">
-										{product.features.map((feature, idx) => (
-											<li key={idx} className="flex items-start">
-												<span className="mr-2 text-primary">•</span>
-												<span className="text-sm">{feature}</span>
-											</li>
-										))}
-									</ul>
-								</div>
-							)}
+							{product.features &&
+								product.features.length > 0 && (
+									<div className="mt-8">
+										<h3 className="font-semibold text-base mb-4">
+											Key Features
+										</h3>
+										<ul className="space-y-3">
+											{product.features.map(
+												(feature, idx) => (
+													<li
+														key={idx}
+														className="flex items-start gap-2.5">
+														<Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+														<span className="text-[15px] text-foreground">
+															{feature}
+														</span>
+													</li>
+												)
+											)}
+										</ul>
+									</div>
+								)}
 
-							<div className="flex gap-4">
+							<div className="flex gap-3 mt-10">
 								<Button
+									onClick={handleAddToCart}
+									disabled={isPending}
 									size="lg"
-									className="flex-1 font-semibold"
-									onClick={handleAddToCart}>
+									className="flex-1 font-semibold h-12 cursor-pointer">
+									{isPending ? (
+										<Loader2 className="mr-2 w-4 h-4 animate-spin" />
+									) : (
+										<ShoppingCart className="mr-2 w-4 h-4" />
+									)}
 									Add to Cart
 								</Button>
 								<Button
+									onClick={handleBuyNow}
+									disabled={isPending}
 									size="lg"
 									variant="outline"
-									className="flex-1 font-semibold">
+									className="flex-1 font-semibold h-12 cursor-pointer">
+									<Zap className="mr-2 w-4 h-4" />
 									Buy Now
 								</Button>
 							</div>

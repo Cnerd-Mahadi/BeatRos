@@ -4,12 +4,13 @@ import z from "zod";
 import { prisma } from "./db";
 import { _env } from "./env";
 import { api } from "./lib/axios";
+import { filterProducts } from "./service";
 import { productIdsSchema } from "./type";
 
 export const handleGetProducts = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const ids = req.query.ids;
@@ -23,15 +24,41 @@ export const handleGetProducts = async (
 };
 
 export const getProducts = async (req: Request, res: Response) => {
+	const { where, orderBy } = filterProducts(req);
 	const products = await prisma.product.findMany({
+		where,
+		orderBy,
+		include: {
+			productCategories: {
+				select: {
+					category: true,
+				},
+			},
+		},
 		skip: 0,
 		take: 50,
 	});
 	return res.status(STATUS.OK).json({ data: products });
 };
 
+export const getBrands = async (req: Request, res: Response) => {
+	const brands = await prisma.brand.findMany({
+		skip: 0,
+		take: 50,
+	});
+	return res.status(STATUS.OK).json({ data: brands });
+};
+
+export const getCategories = async (req: Request, res: Response) => {
+	const categories = await prisma.category.findMany({
+		skip: 0,
+		take: 50,
+	});
+	return res.status(STATUS.OK).json({ data: categories });
+};
+
 export const getProductsByIds = async (req: Request, res: Response) => {
-	const ids = (req.params.ids as string).split(",");
+	const ids = (req.query.ids as string).split(",");
 	const parsed = productIdsSchema.safeParse(ids);
 	if (!parsed.success) {
 		return res.status(STATUS.BAD_REQUEST).json({ error: parsed.error.message });
@@ -60,7 +87,7 @@ export const getProductsByIds = async (req: Request, res: Response) => {
 export const getProduct = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	const productIdSchema = z.string();
 	const parsed = productIdSchema.safeParse(req.params.productId);
@@ -72,13 +99,21 @@ export const getProduct = async (
 	try {
 		const product = await prisma.product.findFirst({
 			where: { id: productId },
+			include: {
+				brand: true,
+				productCategories: {
+					select: {
+						category: true,
+					},
+				},
+			},
 		});
 		if (!product) {
 			return res.status(STATUS.NOT_FOUND).json({ error: "Product not found" });
 		}
 
 		const response = await api.get(
-			`${_env.INVENTORY_SERVICE_URL}/api/inventory/${product.inventoryId}`
+			`${_env.INVENTORY_SERVICE_URL}/api/inventory/${product.inventoryId}`,
 		);
 
 		if (isError(response.status)) {
@@ -86,7 +121,7 @@ export const getProduct = async (
 		}
 
 		const inventory = response.data.data;
-		return res.status(STATUS.OK).json({ ...product, inventory });
+		return res.status(STATUS.OK).json({ data: { ...product, inventory } });
 	} catch (error) {
 		next(error);
 	}

@@ -7,11 +7,11 @@ import { lineItemSchema } from "./type";
 export const getInventory = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const inventoryIdSchema = z.string();
-		const parsed = inventoryIdSchema.safeParse(req.params);
+		const parsed = inventoryIdSchema.safeParse(req.params.id);
 		if (!parsed.success) {
 			return res
 				.status(STATUS.BAD_REQUEST)
@@ -37,10 +37,10 @@ export const getInventory = async (
 export const getInventoriesByIds = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
-		const ids = (req.params.ids as string).split(",");
+		const ids = (req.query.ids as string).split(",");
 		const inventoryIdsSchema = z.array(z.string().min(1));
 		const parsed = inventoryIdsSchema.safeParse(ids);
 		if (!parsed.success) {
@@ -77,7 +77,7 @@ export const getInventoriesByIds = async (
 export const reserveInventory = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const parsedBody = lineItemSchema.safeParse(req.body);
@@ -122,7 +122,7 @@ export const reserveInventory = async (
 export const deductInventory = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const parsedBody = lineItemSchema.safeParse(req.body);
@@ -165,7 +165,7 @@ export const deductInventory = async (
 export const releaseInventory = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const parsedBody = lineItemSchema.safeParse(req.body);

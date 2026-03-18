@@ -5,7 +5,7 @@
 
 */
 -- DropIndex
-DROP INDEX "INVENTORY"."Inventory_productId_key";
+DROP INDEX "Inventory_productId_key";
 
 -- AlterTable
-ALTER TABLE "INVENTORY"."Inventory" DROP COLUMN "productId";
+ALTER TABLE "Inventory" DROP COLUMN "productId";

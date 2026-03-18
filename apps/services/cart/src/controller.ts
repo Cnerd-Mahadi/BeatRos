@@ -40,6 +40,22 @@ export const addProductToCart = async (
 		const product = response.data.data as ProductType;
 		logger.info("Product found", { id: product.id });
 
+		if (quantity <= 0) {
+			const expiration = updatedExpiry(sessionType);
+			await redis.hdel(cartId, productId);
+			logger.info("Product removed from cart", { id: product.id });
+			await redis.expire(cartId, expiration);
+			logger.info("Increased cart expiration", {
+				expiration,
+			});
+
+			return res.status(STATUS.OK).json({
+				data: {
+					productId,
+				},
+			});
+		}
+
 		const inventory = product.inventory;
 		const available = inventory.total_quantity - inventory.reserved_quantity;
 		if (available <= 0) {
@@ -83,7 +99,8 @@ export const getCart = async (
 	next: NextFunction
 ) => {
 	try {
-		const parsed = cartSessionSchema.safeParse(req.params);
+		console.log(req.query);
+		const parsed = cartSessionSchema.safeParse(req.query);
 		if (!parsed.success) {
 			return res
 				.status(STATUS.BAD_REQUEST)
@@ -93,9 +110,7 @@ export const getCart = async (
 		const cartId = getCartKey(sessionType, sessionId);
 		const cartExists = await redis.exists(cartId);
 		if (!cartExists) {
-			return res
-				.status(STATUS.NOT_FOUND)
-				.json({ error: "Cart session not found" });
+			return res.status(STATUS.OK).json({ data: [] });
 		}
 
 		const cartItems = (await redis.hgetall<CartItem>(cartId)) ?? {};
@@ -176,20 +191,22 @@ export const transferCart = async (
 
 		const { userId, sessionId } = parsed.data;
 		const sessionCartId = getCartKey(userType.ANONYMOUS, sessionId);
+		console.log(sessionCartId, "SS");
 		const currentCart = (await redis.hgetall<CartItem>(sessionCartId)) ?? {};
-		if (!currentCart) {
-			return res.status(STATUS.OK).json({ message: "No cart found" });
-		}
-
-		const pipeline = redis.pipeline();
 		const userCartId = getCartKey(userType.USER, userId);
-		Object.entries(currentCart).forEach(([k, v]) =>
-			pipeline.hset(userCartId, {
-				[k]: v,
-			})
-		);
-		await pipeline.exec();
-		await redis.del(sessionCartId);
+
+		if (currentCart && Object.entries(currentCart).length) {
+			const pipeline = redis.pipeline();
+			console.log(currentCart, "Cart");
+			Object.entries(currentCart).forEach(([k, v]) => {
+				console.log(k, v);
+				pipeline.hset(userCartId, {
+					[k]: v,
+				});
+			});
+			await pipeline.exec();
+			await redis.del(sessionCartId);
+		}
 
 		return res.status(STATUS.OK).json({ data: userCartId });
 	} catch (error) {

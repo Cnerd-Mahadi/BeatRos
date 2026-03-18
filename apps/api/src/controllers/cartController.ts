@@ -1,7 +1,6 @@
 import logger from "@shared/src/logger";
 import { STATUS } from "@shared/src/response";
 import { NextFunction, Request, Response } from "express";
-import { ANONYMOUS_SESSION_ID_COOKIE } from "../constant";
 import { _env } from "../env";
 import { api } from "../lib/axios";
 import {
@@ -61,7 +60,7 @@ export const transferCart = async (
 		if (!userId)
 			return res.status(STATUS.NOT_FOUND).json({ error: "User Id not found" });
 
-		const sessionId = req.cookies[ANONYMOUS_SESSION_ID_COOKIE];
+		const sessionId = req.query.session_id;
 		if (!sessionId)
 			return res
 				.status(STATUS.NOT_FOUND)

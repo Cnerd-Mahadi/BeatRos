@@ -7,9 +7,9 @@
 
 */
 -- AlterTable
-ALTER TABLE "INVENTORY"."Inventory" DROP COLUMN "productID",
+ALTER TABLE "Inventory" DROP COLUMN "productID",
 ADD COLUMN     "productId" TEXT NOT NULL,
 ALTER COLUMN "status" SET DEFAULT 'ACTIVE';
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Inventory_productId_key" ON "INVENTORY"."Inventory"("productId");
+CREATE UNIQUE INDEX "Inventory_productId_key" ON "Inventory"("productId");

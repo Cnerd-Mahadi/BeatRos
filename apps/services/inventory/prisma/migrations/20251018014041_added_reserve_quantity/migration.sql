@@ -6,6 +6,6 @@
 
 */
 -- AlterTable
-ALTER TABLE "INVENTORY"."Inventory" DROP COLUMN "quantity",
+ALTER TABLE "Inventory" DROP COLUMN "quantity",
 ADD COLUMN     "reserved_quantity" INTEGER NOT NULL DEFAULT 0,
 ADD COLUMN     "total_quantity" INTEGER NOT NULL;

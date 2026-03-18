@@ -11,7 +11,7 @@ import { releaseStockSchema, sendEmailSchema } from "./type";
 export const sendEmail = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const parsedBody = sendEmailSchema.safeParse(req.body);
@@ -48,11 +48,11 @@ export const sendEmail = async (
 		const emailTemplate = await orderConfirmationTemplate(
 			orderId,
 			lineItems,
-			order.totalAmount.toNumber()
+			order.totalAmount.toNumber(),
 		);
 
 		await transporter.sendMail({
-			from: "BeatRos LLC",
+			from: _env.MAIL_FROM,
 			to: email,
 			subject: "Order Confirmation",
 			html: emailTemplate,
@@ -71,7 +71,7 @@ export const sendEmail = async (
 export const releaseStock = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const parsedBody = releaseStockSchema.safeParse(req.body);
@@ -98,8 +98,8 @@ export const releaseStock = async (
 		});
 
 		const response = await axios.post(
-			`${_env.INVENTORY_SERVICE_URL}/api/inventory/deduct`,
-			lineItems
+			`${_env.INVENTORY_SERVICE_URL}/api/inventory/release`,
+			lineItems,
 		);
 		if (isError(response.status)) {
 			return res.status(response.status).json(response.data);

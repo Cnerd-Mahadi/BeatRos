@@ -1,56 +1,43 @@
+import { ProductSchema } from "@/types/product";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
-interface ProductCardProps {
-	id: string;
-	name: string;
-	price: number;
-	image: string;
-	description?: string;
-}
+type ProductCardProps = ProductSchema;
 
 const ProductCard = ({
 	id,
-	name,
-	price,
-	image,
+	title,
+	priceInCents,
+	imageUrl,
 	description,
 }: ProductCardProps) => {
 	return (
 		<Link href={`/product/${id}`}>
-			<div className="group cursor-pointer">
-				<motion.div
-					whileHover={{ y: -6 }}
-					transition={{
-						duration: 0.3,
-						ease: [0.25, 0.1, 0.25, 1],
-					}}
-					className="bg-white shadow-sm group-hover:shadow-md ring-border/60 group-hover:ring-border rounded-lg ring-1 w-full aspect-square overflow-hidden transition-all duration-300 ease-smooth">
-					<motion.img
-						whileHover={{ scale: 1.015 }}
-						transition={{
-							duration: 0.3,
-							ease: [0.25, 0.1, 0.25, 1],
-						}}
-						src={image}
-						alt={name}
-						className="w-full h-full object-center object-cover"
+			<motion.div
+				className="group cursor-pointer"
+				whileHover={{ y: -3 }}
+				transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}>
+				<div className="bg-muted/50 rounded-xl w-full aspect-square overflow-hidden">
+					<img
+						src={imageUrl}
+						alt={title}
+						className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-500 ease-out"
 					/>
-				</motion.div>
-				<div className="mt-3">
-					<h3 className="font-semibold group-hover:text-primary text-base tracking-tight transition-colors duration-200">
-						{name}
+				</div>
+				<div className="mt-4 space-y-1">
+					<h3 className="font-semibold text-foreground text-[15px] leading-snug tracking-tight group-hover:text-primary transition-colors">
+						{title}
 					</h3>
 					{description && (
-						<p className="mt-1 text-[13px] text-muted-foreground leading-5">
+						<p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
 							{description}
 						</p>
 					)}
-					<p className="mt-2 font-semibold text-primary text-base">
-						${price.toFixed(2)}
+					<p className="font-bold text-foreground text-[15px] pt-1">
+						${(priceInCents / 100).toFixed(2)}
 					</p>
 				</div>
-			</div>
+			</motion.div>
 		</Link>
 	);
 };

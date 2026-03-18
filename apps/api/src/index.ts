@@ -1,6 +1,7 @@
 import { clerkMiddleware } from "@clerk/express";
 import logger from "@shared/src/logger";
 import { HttpError } from "@shared/src/response";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
@@ -12,8 +13,14 @@ dotenv.config();
 
 const app = express();
 
+app.use(cookieParser());
 app.use(clerkMiddleware());
-app.use(cors());
+app.use(
+	cors({
+		origin: process.env.APP_URL || "http://localhost:3000",
+		credentials: true,
+	}),
+);
 app.use(express.json());
 app.use(morgan("dev"));
 
@@ -28,7 +35,7 @@ app.get("/health", (_req, res) => {
 app.use("/api/v1", router);
 
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
-	logger.error(err.message, err.stack);
+	logger.error(err.message, { name: err.name, details: err.stack });
 	if (err instanceof HttpError) {
 		res.status(err.status).json({ error: err.message });
 	} else {

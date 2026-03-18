@@ -1,66 +1,98 @@
-import { Facebook, Instagram, Twitter } from "lucide-react";
+import Logo from "@/components/Logo";
+import { Instagram, Twitter } from "lucide-react";
 import Link from "next/link";
 
 const Footer = () => {
 	return (
-		<footer className="bg-background border-t w-full">
-			<div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 container">
-				<nav className="flex flex-wrap justify-center -mx-5 -my-2">
-					<div className="px-5 py-2">
-						<Link
-							href="/"
-							className="text-muted-foreground hover:text-primary text-sm">
-							About Us
-						</Link>
+		<footer className="bg-card border-t border-border/60 w-full">
+			<div className="mx-auto px-6 sm:px-8 lg:px-12 pt-16 pb-10 max-w-7xl">
+				<div className="gap-12 grid grid-cols-1 md:grid-cols-4">
+					<div className="md:col-span-1">
+						<Logo variant="header" />
+						<p className="mt-4 text-muted-foreground text-sm leading-relaxed max-w-xs">
+							Premium audio equipment designed for those who
+							appreciate exceptional sound quality.
+						</p>
 					</div>
-					<div className="px-5 py-2">
-						<Link
-							href="/"
-							className="text-muted-foreground hover:text-primary text-sm">
-							Contact
-						</Link>
-					</div>
-					<div className="px-5 py-2">
-						<Link
-							href="/"
-							className="text-muted-foreground hover:text-primary text-sm">
-							Support
-						</Link>
-					</div>
-					<div className="px-5 py-2">
-						<Link
-							href="/"
-							className="text-muted-foreground hover:text-primary text-sm">
-							Privacy Policy
-						</Link>
-					</div>
-					<div className="px-5 py-2">
-						<Link
-							href="/"
-							className="text-muted-foreground hover:text-primary text-sm">
-							Terms of Service
-						</Link>
-					</div>
-				</nav>
 
-				<div className="flex justify-center space-x-6 mt-8">
-					<a href="#" className="text-muted-foreground hover:text-primary">
-						<span className="sr-only">Twitter</span>
-						<Twitter className="w-6 h-6" />
-					</a>
-					<a href="#" className="text-muted-foreground hover:text-primary">
-						<span className="sr-only">Instagram</span>
-						<Instagram className="w-6 h-6" />
-					</a>
-					<a href="#" className="text-muted-foreground hover:text-primary">
-						<span className="sr-only">Facebook</span>
-						<Facebook className="w-6 h-6" />
-					</a>
+					<div>
+						<h4 className="font-heading font-bold text-foreground text-sm uppercase tracking-[0.08em] mb-5">
+							Quick Links
+						</h4>
+						<ul className="space-y-3">
+							<li>
+								<Link
+									href="/products"
+									className="text-muted-foreground hover:text-primary text-sm transition-colors cursor-pointer">
+									Shop
+								</Link>
+							</li>
+							<li>
+								<Link
+									href="/"
+									className="text-muted-foreground hover:text-primary text-sm transition-colors cursor-pointer">
+									About Us
+								</Link>
+							</li>
+						</ul>
+					</div>
+
+					<div>
+						<h4 className="font-heading font-bold text-foreground text-sm uppercase tracking-[0.08em] mb-5">
+							Support
+						</h4>
+						<ul className="space-y-3">
+							<li>
+								<Link
+									href="/"
+									className="text-muted-foreground hover:text-primary text-sm transition-colors cursor-pointer">
+									Contact
+								</Link>
+							</li>
+							<li>
+								<Link
+									href="/"
+									className="text-muted-foreground hover:text-primary text-sm transition-colors cursor-pointer">
+									Privacy Policy
+								</Link>
+							</li>
+							<li>
+								<Link
+									href="/"
+									className="text-muted-foreground hover:text-primary text-sm transition-colors cursor-pointer">
+									Terms of Service
+								</Link>
+							</li>
+						</ul>
+					</div>
+
+					<div>
+						<h4 className="font-heading font-bold text-foreground text-sm uppercase tracking-[0.08em] mb-5">
+							Follow Us
+						</h4>
+						<div className="flex items-center gap-4">
+							<a
+								href="#"
+								className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">
+								<span className="sr-only">Twitter</span>
+								<Twitter className="w-5 h-5" />
+							</a>
+							<a
+								href="#"
+								className="text-muted-foreground hover:text-primary transition-colors cursor-pointer">
+								<span className="sr-only">Instagram</span>
+								<Instagram className="w-5 h-5" />
+							</a>
+						</div>
+					</div>
 				</div>
 
-				<p className="mt-8 text-muted-foreground text-sm text-center">
-					© 2024 SoundWave. All rights reserved.
-				</p>
+				<div className="mt-12 pt-8 border-t border-border/60">
+					<p className="text-muted-foreground/70 text-xs text-center tracking-wide">
+						&copy; {new Date().getFullYear()} BeatRos. All rights
+						reserved.
+					</p>
+				</div>
 			</div>
 		</footer>
 	);

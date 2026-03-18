@@ -15,15 +15,17 @@ const envSchema = z.object({
 	CART_SERVICE_URL: z.string(),
 	PRODUCT_SERVICE_URL: z.string(),
 	STRIPE_SECRET_KEY: z.string(),
+	STRIPE_WEBHOOK_SECRET: z.string(),
 	WORKER_STOCK_RELEASE_URL: z.string(),
 	WORKER_SEND_EMAIL_URL: z.string(),
 	CHECKOUT_SUCCESS_URL: z.string(),
 	CHECKOUT_FAILURE_URL: z.string(),
 	QSTASH_TOKEN: z.string(),
-	MAIL_PORT: z.number(),
+	MAIL_PORT: z.coerce.number(),
 	MAIL_HOST: z.string(),
 	MAIL_USERNAME: z.string(),
 	MAIL_PASSWORD: z.string(),
+	MAIL_FROM: z.string().default('"BeatRos" <noreply@beatros.com>'),
 });
 
 export const _env = envSchema.parse(process.env);

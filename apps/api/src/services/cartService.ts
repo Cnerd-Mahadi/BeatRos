@@ -16,7 +16,6 @@ export function getCurrentSession(req: Request) {
 	if (isAuthenticated) {
 		return { type: userType.USER, id: userId };
 	}
-
 	sessionId = req.cookies[ANONYMOUS_SESSION_ID_COOKIE] as string | null;
 	if (sessionId) {
 		return { type: userType.ANONYMOUS, id: sessionId };
@@ -42,7 +41,7 @@ export function validateCart(
 		return { ...p, quantity: c.quantity, available };
 	});
 
-	return { validated, insufficient };
+	return { cart: validated, insufficient };
 }
 
 export async function fetchCartData(req: Request) {

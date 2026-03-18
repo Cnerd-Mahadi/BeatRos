@@ -10,13 +10,13 @@ export const createCheckoutSession = async (
 	orderId: string
 ) => {
 	const stripeLineItems = lineItems.map((li) => ({
-		price: li.price.toString(),
 		quantity: li.quantity,
 		price_data: {
+			unit_amount: li.price,
 			currency: "USD",
 			product_data: {
 				name: li.title,
-				image: li.image,
+				images: [li.image],
 			},
 		},
 	}));

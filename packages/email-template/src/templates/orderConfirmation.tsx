@@ -9,6 +9,7 @@ import {
 	Tailwind,
 	Text,
 } from "@react-email/components";
+import React from "react";
 
 export interface LineItem {
 	title: string;
@@ -70,7 +71,7 @@ export const OrderConfirmation = ({
 												{item.quantity}
 											</td>
 											<td className="py-3 text-gray-700 text-right">
-												${(item.quantity * item.price).toFixed(2)}
+												${((item.quantity * item.price) / 100).toFixed(2)}
 											</td>
 										</tr>
 									))}
@@ -80,7 +81,7 @@ export const OrderConfirmation = ({
 							{/* Total */}
 							<div className="pt-4 border-t text-right">
 								<Text className="font-bold text-gray-900 text-xl">
-									Total: ${total.toFixed(2)}
+									Total: ${(total / 100).toFixed(2)}
 								</Text>
 							</div>
 						</Section>

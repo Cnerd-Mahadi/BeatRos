@@ -3,150 +3,320 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
+import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import { Button } from "@/components/ui/button";
-import { products } from "@/data/products";
+import { getProducts } from "@/services/product";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import { ArrowRight, Headphones, Shield, Truck } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
+	const { isLoading, data: products = [] } = useQuery({
+		queryKey: ["products"],
+		queryFn: () => getProducts(),
+	});
+
 	const featuredProducts = products.slice(0, 3);
 	const bestSellers = products.slice(0, 4);
 
 	return (
-		<div className="flex flex-col w-full min-h-screen overflow-x-hidden">
+		<div className="flex flex-col w-full min-h-screen">
 			<Header />
 			<main className="flex-grow">
+				{/* Hero */}
 				<motion.section
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
-					transition={{ duration: 0.5, ease: "easeOut" }}
-					className="relative flex items-end bg-cover bg-no-repeat bg-center px-4 md:px-8 lg:px-16 py-16 min-h-[60vh]"
+					transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+					className="relative flex items-center justify-center bg-cover bg-no-repeat bg-center px-6 sm:px-8 lg:px-12 min-h-[80vh]"
 					style={{
-						backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1545127398-14699f92334b?q=80&w=2000&auto=format&fit=crop')`,
+						backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=2000&auto=format&fit=crop')`,
 					}}>
 					<motion.div
-						className="mx-auto max-w-4xl text-white text-center"
-						initial={{ opacity: 0, y: 30 }}
+						className="max-w-3xl text-white text-center"
+						initial={{ opacity: 0, y: 24 }}
 						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}>
-						<h1 className="font-bold text-4xl sm:text-5xl lg:text-6xl tracking-tight">
-							Immerse Yourself in Sound
-						</h1>
-						<p className="mt-4 sm:mt-6 text-white/90 text-lg">
-							Experience the ultimate audio quality with our latest headphones.
-							Designed for comfort and performance, they're perfect for any
-							activity.
+						transition={{
+							duration: 0.7,
+							ease: [0.16, 1, 0.3, 1],
+							delay: 0.15,
+						}}>
+						<p className="text-white/90 text-sm font-medium uppercase tracking-[0.2em] mb-5">
+							Premium Audio
 						</p>
-						<div className="mt-8">
+						<h1 className="text-display-lg sm:text-display-lg tracking-[-0.04em] font-heading">
+							Immerse Yourself
+							<br />
+							in Sound
+						</h1>
+						<p className="mt-6 text-white/90 text-lg max-w-xl mx-auto leading-relaxed">
+							Premium headphones and audio gear, crafted for those
+							who hear the difference.
+						</p>
+						<div className="mt-10">
 							<Link href="/products">
 								<Button
 									size="lg"
-									className="bg-primary shadow-lg font-bold text-base hover:scale-105 transition-transform">
-									Shop Now
+									className="font-semibold text-sm px-8 h-12 cursor-pointer">
+									Shop Collection
+									<ArrowRight className="ml-2 w-4 h-4" />
 								</Button>
 							</Link>
 						</div>
 					</motion.div>
 				</motion.section>
 
-				<section className="py-16 sm:py-24">
-					<div className="mx-auto px-4 sm:px-6 lg:px-8 container">
-						<motion.h2
-							initial={{ opacity: 0, y: 20 }}
+				{/* Value Propositions */}
+				<section className="py-14 border-b border-border/60">
+					<div className="mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl">
+						<div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12">
+							{[
+								{
+									icon: Truck,
+									title: "Free Shipping",
+									desc: "On all orders over $50",
+								},
+								{
+									icon: Shield,
+									title: "2-Year Warranty",
+									desc: "Full coverage guaranteed",
+								},
+								{
+									icon: Headphones,
+									title: "Expert Support",
+									desc: "Dedicated audio specialists",
+								},
+							].map((item, i) => (
+								<motion.div
+									key={item.title}
+									initial={{ opacity: 0, y: 12 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									viewport={{ once: true }}
+									transition={{
+										duration: 0.4,
+										ease: [0.16, 1, 0.3, 1],
+										delay: i * 0.08,
+									}}
+									className="flex items-center gap-4">
+									<div className="flex-shrink-0 w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+										<item.icon className="w-5 h-5 text-primary" />
+									</div>
+									<div>
+										<h3 className="text-sm font-semibold text-foreground">
+											{item.title}
+										</h3>
+										<p className="text-sm text-muted-foreground mt-0.5">
+											{item.desc}
+										</p>
+									</div>
+								</motion.div>
+							))}
+						</div>
+					</div>
+				</section>
+
+				{/* Featured Products */}
+				<section className="py-24 sm:py-28">
+					<div className="mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl">
+						<motion.div
+							initial={{ opacity: 0, y: 16 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true, amount: 0.3 }}
-							transition={{ duration: 0.4, ease: "easeOut" }}
-							className="mb-8 sm:mb-12 font-bold text-3xl text-center">
-							Featured Products
-						</motion.h2>
+							transition={{
+								duration: 0.5,
+								ease: [0.16, 1, 0.3, 1],
+							}}
+							className="flex items-end justify-between mb-12">
+							<div>
+								<p className="text-sm font-semibold uppercase tracking-[0.12em] text-primary mb-2">
+									Curated Selection
+								</p>
+								<h2 className="text-heading-lg tracking-tight">
+									Featured Products
+								</h2>
+								<p className="mt-2 text-muted-foreground text-base">
+									Handpicked for exceptional listening.
+								</p>
+							</div>
+							<Link
+								href="/products"
+								className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-primary transition-colors cursor-pointer">
+								View all
+								<ArrowRight className="w-3.5 h-3.5" />
+							</Link>
+						</motion.div>
 						<motion.div
-							className="gap-x-5 gap-y-8 xl:gap-x-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+							key={`featured-${featuredProducts.length}`}
+							className="gap-x-6 gap-y-10 xl:gap-x-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
 							initial="hidden"
-							whileInView="visible"
-							viewport={{ once: true, amount: 0.1 }}
+							animate={isLoading ? "hidden" : "visible"}
 							variants={{
 								hidden: { opacity: 0 },
 								visible: {
 									opacity: 1,
-									transition: {
-										staggerChildren: 0.08,
-									},
+									transition: { staggerChildren: 0.08 },
 								},
 							}}>
-							{featuredProducts.map((product) => (
-								<motion.div
-									key={product.id}
-									variants={{
-										hidden: { opacity: 0, y: 10 },
-										visible: { opacity: 1, y: 0 },
-									}}
-									transition={{ duration: 0.3, ease: "easeOut" }}>
-									<ProductCard {...product} />
-								</motion.div>
-							))}
+							{isLoading
+								? Array.from({ length: 3 }).map((_, index) => (
+										<motion.div
+											key={`skeleton-${index}`}
+											variants={{
+												hidden: {
+													opacity: 0,
+													y: 12,
+												},
+												visible: {
+													opacity: 1,
+													y: 0,
+												},
+											}}
+											transition={{
+												duration: 0.4,
+												ease: [0.16, 1, 0.3, 1],
+											}}>
+											<ProductCardSkeleton />
+										</motion.div>
+									))
+								: featuredProducts.map((product) => (
+										<motion.div
+											key={product.id}
+											variants={{
+												hidden: {
+													opacity: 0,
+													y: 12,
+												},
+												visible: {
+													opacity: 1,
+													y: 0,
+												},
+											}}
+											transition={{
+												duration: 0.4,
+												ease: [0.16, 1, 0.3, 1],
+											}}>
+											<ProductCard {...product} />
+										</motion.div>
+									))}
 						</motion.div>
 					</div>
 				</section>
 
-				<section className="bg-card py-16 sm:py-24">
-					<div className="mx-auto px-4 sm:px-6 lg:px-8 container">
-						<motion.h2
-							initial={{ opacity: 0, y: 20 }}
+				{/* Best Sellers */}
+				<section className="bg-muted/40 py-24 sm:py-28">
+					<div className="mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl">
+						<motion.div
+							initial={{ opacity: 0, y: 16 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true, amount: 0.3 }}
-							transition={{ duration: 0.4, ease: "easeOut" }}
-							className="mb-8 sm:mb-12 font-bold text-3xl text-center">
-							Best Sellers
-						</motion.h2>
+							transition={{
+								duration: 0.5,
+								ease: [0.16, 1, 0.3, 1],
+							}}
+							className="flex items-end justify-between mb-12">
+							<div>
+								<p className="text-sm font-semibold uppercase tracking-[0.12em] text-primary mb-2">
+									Popular Picks
+								</p>
+								<h2 className="text-heading-lg tracking-tight">
+									Best Sellers
+								</h2>
+								<p className="mt-2 text-muted-foreground text-base">
+									Most loved by our customers.
+								</p>
+							</div>
+							<Link
+								href="/products"
+								className="hidden sm:flex items-center gap-1.5 text-sm font-semibold text-foreground hover:text-primary transition-colors cursor-pointer">
+								View all
+								<ArrowRight className="w-3.5 h-3.5" />
+							</Link>
+						</motion.div>
 						<motion.div
-							className="gap-x-5 gap-y-8 xl:gap-x-6 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4"
+							key={`bestsellers-${bestSellers.length}`}
+							className="gap-x-6 gap-y-10 xl:gap-x-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4"
 							initial="hidden"
-							whileInView="visible"
-							viewport={{ once: true, amount: 0.1 }}
+							animate={isLoading ? "hidden" : "visible"}
 							variants={{
 								hidden: { opacity: 0 },
 								visible: {
 									opacity: 1,
-									transition: {
-										staggerChildren: 0.08,
-									},
+									transition: { staggerChildren: 0.06 },
 								},
 							}}>
-							{bestSellers.map((product) => (
-								<motion.div
-									key={product.id}
-									variants={{
-										hidden: { opacity: 0, y: 10 },
-										visible: { opacity: 1, y: 0 },
-									}}
-									transition={{ duration: 0.3, ease: "easeOut" }}>
-									<ProductCard {...product} />
-								</motion.div>
-							))}
+							{isLoading
+								? Array.from({ length: 4 }).map((_, index) => (
+										<motion.div
+											key={`skeleton-${index}`}
+											variants={{
+												hidden: {
+													opacity: 0,
+													y: 12,
+												},
+												visible: {
+													opacity: 1,
+													y: 0,
+												},
+											}}
+											transition={{
+												duration: 0.4,
+												ease: [0.16, 1, 0.3, 1],
+											}}>
+											<ProductCardSkeleton />
+										</motion.div>
+									))
+								: bestSellers.map((product) => (
+										<motion.div
+											key={product.id}
+											variants={{
+												hidden: {
+													opacity: 0,
+													y: 12,
+												},
+												visible: {
+													opacity: 1,
+													y: 0,
+												},
+											}}
+											transition={{
+												duration: 0.4,
+												ease: [0.16, 1, 0.3, 1],
+											}}>
+											<ProductCard {...product} />
+										</motion.div>
+									))}
 						</motion.div>
 					</div>
 				</section>
 
-				<section className="py-16 sm:py-24">
+				{/* CTA Banner */}
+				<section className="relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 py-24 sm:py-28">
+					<div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(217_70%_55%_/_0.15)_0%,_transparent_60%)]" />
 					<motion.div
-						className="mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl text-center container"
-						initial={{ opacity: 0, y: 20 }}
+						className="relative mx-auto px-6 sm:px-8 lg:px-12 max-w-3xl text-center"
+						initial={{ opacity: 0, y: 16 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true, amount: 0.3 }}
-						transition={{ duration: 0.5, ease: "easeOut" }}>
-						<h2 className="font-bold text-3xl sm:text-4xl tracking-tight">
-							Join the SoundWave Community
+						transition={{
+							duration: 0.5,
+							ease: [0.16, 1, 0.3, 1],
+						}}>
+						<h2 className="text-heading-lg text-white tracking-tight">
+							Join the BeatRos Community
 						</h2>
-						<p className="mt-4 text-muted-foreground text-lg">
-							Stay up-to-date on the latest products, promotions, and exclusive
-							offers.
+						<p className="mt-4 text-slate-300 text-base leading-relaxed">
+							Get early access to new products, exclusive offers,
+							and curated audio content.
 						</p>
-						<div className="flex justify-center mt-8">
-							<Button
-								size="lg"
-								className="bg-primary shadow-lg font-bold text-base hover:scale-105 transition-transform">
-								Sign Up
-							</Button>
+						<div className="mt-8">
+							<Link href="/auth/sign-up">
+								<Button
+									size="lg"
+									className="font-semibold text-sm px-8 h-12 bg-white text-slate-900 hover:bg-slate-100 cursor-pointer">
+									Create Account
+								</Button>
+							</Link>
 						</div>
 					</motion.div>
 				</section>

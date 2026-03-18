@@ -1,3 +1,4 @@
+import logger from "@shared/src/logger";
 import { HttpError } from "@shared/src/response";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
@@ -22,7 +23,7 @@ app.get("/health", (_req, res) => {
 app.use("/api/cart", cartRouter);
 
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
-	console.error(err.message);
+	logger.error(err.message, { name: err.name, details: err.stack });
 	if (err instanceof HttpError) {
 		res.status(err.status).json({ error: err.message });
 	} else {

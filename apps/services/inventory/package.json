@@ -6,9 +6,10 @@
 	"scripts": {
 		"dev": "tsx watch src/index.ts",
 		"build": "tsc",
-		"prisma:migrate": "pnpm dlx prisma migrate dev",
-		"prisma:generate": "pnpm dlx prisma generate",
-		"prisma:reset": "pnpm dlx prisma migrate reset",
+		"prisma:migrate": "prisma migrate dev",
+		"prisma:generate": "prisma generate",
+		"prisma:reset": "prisma migrate reset",
+		"prisma:seed": "tsx prisma/seed.ts",
 		"start": "node dist/index.js",
 		"check-types": "tsc --noEmit",
 		"lint": "eslint src/ --max-warnings 0"
