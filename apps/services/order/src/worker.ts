@@ -1,7 +1,7 @@
 import axios from "axios";
 import { orderConfirmationTemplate } from "email-template";
 import type { NextFunction, Request, Response } from "express";
-import { createTransport } from "nodemailer";
+import { Resend } from "resend";
 import { isError, logger, STATUS } from "shared";
 import { prisma } from "./db";
 import { _env } from "./env";
@@ -36,26 +36,20 @@ export const sendEmail = async (
 			orderId: orderId,
 		});
 
-		const transporter = createTransport({
-			host: _env.MAIL_HOST,
-			port: _env.MAIL_PORT,
-			auth: {
-				user: _env.MAIL_USERNAME,
-				pass: _env.MAIL_PASSWORD,
-			},
-		});
+		const resend = new Resend(_env.RESEND_API_KEY);
 		const emailTemplate = await orderConfirmationTemplate(
 			orderId,
 			lineItems,
 			order.totalAmount.toNumber(),
 		);
 
-		await transporter.sendMail({
+		await resend.emails.send({
 			from: _env.MAIL_FROM,
 			to: email,
 			subject: "Order Confirmation",
 			html: emailTemplate,
 		});
+
 		logger.info("Order confirmation email is sent", {
 			orderId,
 			email,

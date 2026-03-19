@@ -21,6 +21,7 @@ const envSchema = z.object({
 	MAIL_HOST: z.string(),
 	MAIL_USERNAME: z.string(),
 	MAIL_PASSWORD: z.string(),
+	RESEND_API_KEY: z.string(),
 	MAIL_FROM: z.string().default('"BeatRos" <noreply@beatros.com>'),
 });
 
