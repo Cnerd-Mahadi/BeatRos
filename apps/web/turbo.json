@@ -2,6 +2,7 @@
 	"extends": ["//"],
 	"tasks": {
 		"build": {
+			"env": ["API_URL"],
 			"outputs": [".next/**", "!.next/cache/**"]
 		}
 	}
