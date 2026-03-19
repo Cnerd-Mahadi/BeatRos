@@ -30,8 +30,8 @@ export default clerkMiddleware(async (auth, request) => {
 		const newValue = crypto.randomUUID();
 		response.cookies.set(ANONYMOUS_SESSION_ID_COOKIE, newValue, {
 			httpOnly: true,
-			secure: false,
-			sameSite: "lax",
+			secure: process.env.NODE_ENV === "production",
+			sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
 			maxAge: 60 * 60 * 24 * 7,
 		});
 	}
