@@ -13,3 +13,4 @@ dist-ssr
 .pnpm-store
 server/dist
 public/dist
+skills-lock.json

@@ -1,6 +1,8 @@
 import { attachAuthParams } from "@/lib/utils";
 import { AuthenticateWithRedirectCallback } from "@clerk/nextjs";
 
+export const dynamic = "force-dynamic";
+
 export default async function Page({
 	searchParams,
 }: {
