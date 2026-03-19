@@ -1,6 +1,6 @@
 import { getAuth } from "@clerk/express";
 import { Request } from "express";
-import { logger, HttpError, isError, STATUS } from "shared";
+import { HttpError, isError, logger, STATUS } from "shared";
 import { ANONYMOUS_SESSION_ID_COOKIE, userType } from "../constant";
 import { _env } from "../env";
 import { api } from "../lib/axios";
@@ -9,7 +9,7 @@ import { InventoryType } from "../types/inventory";
 import { ProductType } from "../types/product";
 
 export function getCurrentSession(req: Request) {
-	let sessionId = null;
+	let sessionId: string | null = null;
 
 	const { isAuthenticated, userId } = getAuth(req);
 	if (isAuthenticated) {
