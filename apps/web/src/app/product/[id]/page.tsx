@@ -17,6 +17,7 @@ import {
 	Star,
 	Zap,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -103,11 +104,13 @@ export default function ProductDetail() {
 								ease: [0.16, 1, 0.3, 1],
 								delay: 0.1,
 							}}>
-							<div className="bg-muted/50 rounded-2xl aspect-square overflow-hidden">
-								<img
-									src={product.imageUrl}
+							<div className="bg-muted/50 rounded-2xl aspect-square overflow-hidden relative">
+								<Image
+									src={product.imageUrl || "/placeholder.svg"}
 									alt={product.title}
-									className="w-full h-full object-cover object-center"
+									fill
+									className="object-cover object-center"
+									sizes="(max-width: 768px) 100vw, 50vw"
 								/>
 							</div>
 						</motion.div>

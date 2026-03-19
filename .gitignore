@@ -8,5 +8,8 @@ dist-ssr
 *.local
 .env
 .cache
+.agents
+.cursor
+.pnpm-store
 server/dist
 public/dist

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { AlertTriangle } from "lucide-react";
+import Link from "next/link";
 
 export default function Error({
 	error,
@@ -33,7 +34,7 @@ export default function Error({
 						variant="outline"
 						asChild
 						className="cursor-pointer">
-						<a href="/">Go Home</a>
+						<Link href="/">Go Home</Link>
 					</Button>
 				</div>
 			</div>

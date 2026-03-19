@@ -1,6 +1,5 @@
-import logger from "@shared/src/logger";
-import { STATUS } from "@shared/src/response";
 import type { NextFunction, Request, Response } from "express";
+import { logger, STATUS } from "shared";
 import z from "zod";
 import { _env } from "../env";
 import { api } from "../lib/axios";
@@ -10,7 +9,7 @@ import { createLineItems } from "../services/orderService";
 export const createOrder = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const bodySchema = z.object({
@@ -43,7 +42,7 @@ export const createOrder = async (
 				cartId: `cart:${session?.type}:${session?.id}`,
 				lineItems,
 				shippingAddress: parsed.data.address,
-			}
+			},
 		);
 
 		return res.status(response.status).json(response.data);

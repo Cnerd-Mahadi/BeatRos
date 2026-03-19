@@ -1,6 +1,5 @@
-import logger from "@shared/src/logger";
-import { STATUS } from "@shared/src/response";
 import { NextFunction, Request, Response } from "express";
+import { logger, STATUS } from "shared";
 import { _env } from "../env";
 import { api } from "../lib/axios";
 import {
@@ -12,7 +11,7 @@ import {
 export const getCartProducts = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const { products, cartItems, inventories } = await fetchCartData(req);
@@ -30,7 +29,7 @@ export const getCartProducts = async (
 export const getCartLength = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const session = getCurrentSession(req);
@@ -42,7 +41,7 @@ export const getCartLength = async (
 
 		const cartId = `cart:${session.type}:${session.id}`;
 		const response = await api.get(
-			`${_env.CART_SERVICE_URL}/api/cart/${cartId}/length`
+			`${_env.CART_SERVICE_URL}/api/cart/${cartId}/length`,
 		);
 		return res.status(response.status).json(response.data);
 	} catch (error) {
@@ -53,7 +52,7 @@ export const getCartLength = async (
 export const transferCart = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const userId = req.user?.id;
@@ -68,7 +67,7 @@ export const transferCart = async (
 
 		const response = await api.post(
 			`${_env.CART_SERVICE_URL}/api/cart/transfer`,
-			{ sessionId, userId }
+			{ sessionId, userId },
 		);
 
 		return res.status(response.status).json(response.data);
@@ -80,7 +79,7 @@ export const transferCart = async (
 export const addProductToCart = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const session = getCurrentSession(req);
@@ -92,7 +91,7 @@ export const addProductToCart = async (
 
 		const response = await api.post(
 			`${_env.CART_SERVICE_URL}/api/cart/add_to_cart`,
-			{ ...req.body, sessionId: session.id, sessionType: session.type }
+			{ ...req.body, sessionId: session.id, sessionType: session.type },
 		);
 
 		return res.status(response.status).json(response.data);

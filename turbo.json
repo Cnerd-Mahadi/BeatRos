@@ -6,11 +6,11 @@
 			"inputs": ["$TURBO_DEFAULT$", ".env*"],
 			"dependsOn": ["^build"],
 			"outputs": [
-				"build/**",
-				".vercel/**",
 				"dist/**",
 				".next/**",
-				"!.next/cache/**"
+				"!.next/cache/**",
+				"build/**",
+				".vercel/**"
 			]
 		},
 		"lint": {
@@ -21,6 +21,11 @@
 		},
 		"dev": {
 			"dependsOn": ["^build"],
+			"cache": false,
+			"persistent": true
+		},
+		"start": {
+			"dependsOn": ["build"],
 			"cache": false,
 			"persistent": true
 		}

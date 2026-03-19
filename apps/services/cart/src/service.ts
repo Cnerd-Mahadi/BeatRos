@@ -1,4 +1,4 @@
-import { HttpError, STATUS } from "@shared/src/response";
+import { HttpError, STATUS } from "shared";
 
 export const testCart = (testBool: boolean = false) => {
 	if (testBool) {

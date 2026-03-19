@@ -1,5 +1,6 @@
 import { ProductSchema } from "@/types/product";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 
 type ProductCardProps = ProductSchema;
@@ -17,11 +18,13 @@ const ProductCard = ({
 				className="group cursor-pointer"
 				whileHover={{ y: -3 }}
 				transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}>
-				<div className="bg-muted/50 rounded-xl w-full aspect-square overflow-hidden">
-					<img
-						src={imageUrl}
+				<div className="bg-muted/50 rounded-xl w-full aspect-square overflow-hidden relative">
+					<Image
+						src={imageUrl || "/placeholder.svg"}
 						alt={title}
-						className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-500 ease-out"
+						fill
+						className="object-cover object-center group-hover:scale-[1.03] transition-transform duration-500 ease-out"
+						sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
 					/>
 				</div>
 				<div className="mt-4 space-y-1">

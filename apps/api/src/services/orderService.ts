@@ -1,4 +1,4 @@
-import { HttpError, STATUS } from "@shared/src/response";
+import { HttpError, STATUS } from "shared";
 import { CartItem } from "../types/cart";
 import { ProductType } from "../types/product";
 

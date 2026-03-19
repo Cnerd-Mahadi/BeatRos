@@ -24,9 +24,35 @@ import { useQueries } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { PackageOpen } from "lucide-react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 
-export default function Products() {
+function ProductsPageSkeleton() {
+	return (
+		<div className="flex flex-col w-full min-h-screen">
+			<Header />
+			<main className="flex-1 mx-auto px-6 sm:px-8 lg:px-12 py-10 w-full max-w-7xl">
+				<div className="mb-10">
+					<div className="h-4 w-24 bg-muted rounded mb-2" />
+					<div className="h-8 w-32 bg-muted rounded" />
+				</div>
+				<div className="gap-10 grid grid-cols-1 lg:grid-cols-[240px_1fr]">
+					<aside className="space-y-6">
+						<div className="h-10 w-full bg-muted rounded" />
+						<div className="h-24 w-full bg-muted rounded" />
+					</aside>
+					<div className="grid grid-cols-2 sm:grid-cols-3 gap-6">
+						{Array.from({ length: 6 }).map((_, i) => (
+							<ProductCardSkeleton key={i} />
+						))}
+					</div>
+				</div>
+			</main>
+			<Footer />
+		</div>
+	);
+}
+
+function ProductsContent() {
 	const searchParams = useSearchParams();
 	const categorySlug = searchParams.get("category");
 
@@ -316,5 +342,13 @@ export default function Products() {
 			</main>
 			<Footer />
 		</div>
+	);
+}
+
+export default function Products() {
+	return (
+		<Suspense fallback={<ProductsPageSkeleton />}>
+			<ProductsContent />
+		</Suspense>
 	);
 }

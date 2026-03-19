@@ -1,7 +1,5 @@
-import logger from "@shared/src/logger";
-import { redis } from "@shared/src/redis";
-import { isError, STATUS } from "@shared/src/response";
 import type { NextFunction, Request, Response } from "express";
+import { logger, redis, isError, STATUS } from "shared";
 import z from "zod";
 import { userType } from "./constant";
 import { _env } from "./env";
@@ -19,7 +17,7 @@ type CartItem = Record<string, number>;
 export const addProductToCart = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const parsedBody = addProductToCartSchema.safeParse(req.body);
@@ -32,7 +30,7 @@ export const addProductToCart = async (
 		const { productId, quantity, sessionId, sessionType } = parsedBody.data;
 		const cartId = getCartKey(sessionType, sessionId);
 		const response = await api.get(
-			`${_env.PRODUCT_SERVICE_URL}/api/product/${productId}`
+			`${_env.PRODUCT_SERVICE_URL}/api/product/${productId}`,
 		);
 		if (isError(response.status)) {
 			return res.status(response.status).json(response.data);
@@ -96,7 +94,7 @@ export const addProductToCart = async (
 export const getCart = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		console.log(req.query);
@@ -135,7 +133,7 @@ export const getCart = async (
 export const getCartLength = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const cartIdSchema = z.string();
@@ -157,7 +155,7 @@ export const getCartLength = async (
 export const deleteCart = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const cartIdSchema = z.string();
@@ -179,7 +177,7 @@ export const deleteCart = async (
 export const transferCart = async (
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) => {
 	try {
 		const parsed = transferCartSchema.safeParse(req.body);

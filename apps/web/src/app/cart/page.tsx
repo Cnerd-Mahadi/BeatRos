@@ -17,16 +17,51 @@ import {
 	Trash2,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo } from "react";
+import { Suspense, useEffect, useMemo } from "react";
 import { toast } from "sonner";
 
-export default function Cart() {
+function CartPageSkeleton() {
+	return (
+		<div className="flex flex-col w-full min-h-screen justify-center items-center bg-background">
+			<div className="flex flex-col gap-4 w-full max-w-5xl mx-auto px-6">
+				<Skeleton className="mb-4 w-32 h-4" />
+				<Skeleton className="w-48 h-10" />
+				<div className="gap-8 grid grid-cols-1 lg:grid-cols-12">
+					<div className="space-y-4 lg:col-span-8">
+						{Array.from({ length: 3 }).map((_, i) => (
+							<div
+								key={i}
+								className="flex items-center gap-4 p-4 border border-border/60 rounded-xl">
+								<Skeleton className="rounded-lg w-20 h-20" />
+								<div className="flex-1 space-y-2">
+									<Skeleton className="w-3/4 h-5" />
+									<Skeleton className="w-20 h-4" />
+								</div>
+								<Skeleton className="w-28 h-8" />
+							</div>
+						))}
+					</div>
+					<div className="lg:col-span-4">
+						<div className="space-y-4 p-6 border border-border/60 rounded-xl">
+							<Skeleton className="w-32 h-6" />
+							<Skeleton className="w-full h-4" />
+							<Skeleton className="w-full h-4" />
+							<Skeleton className="mt-4 w-full h-10" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+function CartContent() {
 	const queryClient = useQueryClient();
 	const { isLoading, data } = useQuery({
 		queryKey: ["cart"],
 		queryFn: getCart,
 	});
-	const { isPending, mutate } = useMutation({
+	const { mutate } = useMutation({
 		mutationKey: [`product/update_quantity`],
 		mutationFn: async ({
 			id,
@@ -60,43 +95,7 @@ export default function Cart() {
 	}, [data]);
 
 	if (isLoading) {
-		return (
-			<div className="flex flex-col w-full min-h-screen">
-				<Header />
-				<main className="flex-1 mx-auto px-6 sm:px-8 lg:px-12 py-10 w-full max-w-5xl">
-					<div className="mb-8">
-						<Skeleton className="mb-4 w-32 h-4" />
-						<Skeleton className="w-48 h-10" />
-					</div>
-					<div className="gap-8 grid grid-cols-1 lg:grid-cols-12">
-						<div className="space-y-4 lg:col-span-8">
-							{Array.from({ length: 3 }).map((_, i) => (
-								<div
-									key={i}
-									className="flex items-center gap-4 p-4 border border-border/60 rounded-xl">
-									<Skeleton className="rounded-lg w-20 h-20" />
-									<div className="flex-1 space-y-2">
-										<Skeleton className="w-3/4 h-5" />
-										<Skeleton className="w-20 h-4" />
-									</div>
-									<Skeleton className="w-28 h-8" />
-								</div>
-							))}
-						</div>
-						<div className="lg:col-span-4">
-							<div className="space-y-4 p-6 border border-border/60 rounded-xl">
-								<Skeleton className="w-32 h-6" />
-								<Skeleton className="w-full h-4" />
-								<Skeleton className="w-full h-4" />
-								<Skeleton className="w-full h-4" />
-								<Skeleton className="mt-4 w-full h-10" />
-							</div>
-						</div>
-					</div>
-				</main>
-				<Footer />
-			</div>
-		);
+		return <CartPageSkeleton />;
 	}
 
 	if (!data) {
@@ -121,12 +120,11 @@ export default function Cart() {
 		);
 	}
 
-	const inSufficient = data.insufficient;
 	const cart = data.cart;
 
 	function updateQuantity(id: string, updatedQuantity: number) {
 		const previousQuery = queryClient.getQueryData(["cart"]);
-		queryClient.setQueryData(["cart"], (prev: any) => {
+		queryClient.setQueryData(["cart"], (prev: unknown) => {
 			const parsed = cartSchema.safeParse(prev);
 			if (!parsed.success) return previousQuery;
 
@@ -142,7 +140,7 @@ export default function Cart() {
 			}
 
 			return {
-				...prev,
+				...parsed.data,
 				cart: updatedCart,
 			};
 		});
@@ -370,5 +368,13 @@ export default function Cart() {
 			</main>
 			<Footer />
 		</div>
+	);
+}
+
+export default function Cart() {
+	return (
+		<Suspense fallback={<CartPageSkeleton />}>
+			<CartContent />
+		</Suspense>
 	);
 }

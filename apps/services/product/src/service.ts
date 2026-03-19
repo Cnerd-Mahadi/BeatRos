@@ -1,5 +1,5 @@
-import { HttpError, STATUS } from "@shared/src/response";
 import type { Request } from "express";
+import { HttpError, STATUS } from "shared";
 import { Prisma } from "../generated/prisma/index";
 import { productFilterSchema, SortFilter } from "./type";
 

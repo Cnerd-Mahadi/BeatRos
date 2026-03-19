@@ -1,11 +1,10 @@
 import { clerkMiddleware } from "@clerk/express";
-import logger from "@shared/src/logger";
-import { HttpError } from "@shared/src/response";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
+import { logger, HttpError } from "shared";
 import { _env } from "./env";
 import router from "./routes";
 

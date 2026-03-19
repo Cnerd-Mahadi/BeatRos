@@ -1,6 +1,6 @@
 import { getAuth } from "@clerk/express";
-import { STATUS } from "@shared/src/response";
 import { NextFunction, Request, Response } from "express";
+import { STATUS } from "shared";
 
 export const auth = (req: Request, res: Response, next: NextFunction) => {
 	const { isAuthenticated, userId } = getAuth(req);

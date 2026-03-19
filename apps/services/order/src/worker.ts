@@ -1,9 +1,8 @@
-import logger from "@shared/src/logger";
-import { isError, STATUS } from "@shared/src/response";
 import axios from "axios";
 import { orderConfirmationTemplate } from "email-template";
 import type { NextFunction, Request, Response } from "express";
 import { createTransport } from "nodemailer";
+import { isError, logger, STATUS } from "shared";
 import { prisma } from "./db";
 import { _env } from "./env";
 import { releaseStockSchema, sendEmailSchema } from "./type";
@@ -30,7 +29,7 @@ export const sendEmail = async (
 		const lineItems = orderItems.map((o) => ({
 			title: o.productTitle,
 			quantity: o.quantity,
-			price: o.price,
+			price: o.price.toNumber(),
 		}));
 		logger.info("LineItems created from orderItems", {
 			total: lineItems.length,

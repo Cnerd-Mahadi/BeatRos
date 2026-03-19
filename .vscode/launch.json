@@ -1,0 +1,108 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Debug Next.js (web)",
+			"type": "node",
+			"request": "launch",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["--filter", "web", "dev"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"skipFiles": ["<node_internals>/**"]
+		},
+		{
+			"name": "Debug API (Express)",
+			"type": "node",
+			"request": "launch",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["--filter", "api", "dev"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"restart": true,
+			"skipFiles": ["<node_internals>/**"],
+			"env": {
+				"NODE_ENV": "development",
+				"NODE_OPTIONS": "--inspect=9229"
+			}
+		},
+		{
+			"name": "Debug Order Service",
+			"type": "node",
+			"request": "launch",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["--filter", "order", "dev"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"restart": true,
+			"skipFiles": ["<node_internals>/**"],
+			"env": {
+				"NODE_ENV": "development",
+				"NODE_OPTIONS": "--inspect=9230"
+			},
+			"envFile": "${workspaceFolder}/services/order/.env"
+		},
+		{
+			"name": "Debug Product Service",
+			"type": "node",
+			"request": "launch",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["--filter", "product", "dev"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"restart": true,
+			"skipFiles": ["<node_internals>/**"],
+			"env": {
+				"NODE_ENV": "development",
+				"NODE_OPTIONS": "--inspect=9231"
+			},
+			"envFile": "${workspaceFolder}/services/product/.env"
+		},
+		{
+			"name": "Debug Inventory Service",
+			"type": "node",
+			"request": "launch",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["--filter", "inventory", "dev"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"restart": true,
+			"skipFiles": ["<node_internals>/**"],
+			"env": {
+				"NODE_ENV": "development",
+				"NODE_OPTIONS": "--inspect=9232"
+			},
+			"envFile": "${workspaceFolder}/services/inventory/.env"
+		},
+		{
+			"name": "Debug Cart Service",
+			"type": "node",
+			"request": "launch",
+			"runtimeExecutable": "pnpm",
+			"runtimeArgs": ["--filter", "cart", "dev"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"restart": true,
+			"skipFiles": ["<node_internals>/**"],
+			"env": {
+				"NODE_ENV": "development",
+				"NODE_OPTIONS": "--inspect=9233"
+			},
+			"envFile": "${workspaceFolder}/services/cart/.env"
+		}
+	],
+	"compounds": [
+		{
+			"name": "Debug All Services",
+			"configurations": [
+				"Debug API (Express)",
+				"Debug Order Service",
+				"Debug Product Service",
+				"Debug Inventory Service",
+				"Debug Cart Service",
+				"Debug Next.js (web)"
+			],
+			"stopAll": true
+		}
+	]
+}

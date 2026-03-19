@@ -1,14 +1,18 @@
 {
-	"name": "@shared",
+	"name": "shared",
 	"version": "1.0.0",
-	"type": "module",
 	"private": true,
 	"scripts": {
 		"dev": "tsx watch src/index.ts",
 		"build": "tsc"
 	},
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"exports": {
-		".": "./src/index.ts"
+		".": {
+			"types": "./dist/index.d.ts",
+			"require": "./dist/index.js"
+		}
 	},
 	"dependencies": {
 		"@upstash/redis": "^1.35.3",

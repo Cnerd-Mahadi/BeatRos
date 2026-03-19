@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
+import { Suspense } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const navLinks = [
@@ -18,7 +19,7 @@ const navLinks = [
 	{ href: "/products?category=gaming", label: "Gaming", category: "gaming" },
 ];
 
-const Header = () => {
+function HeaderContent() {
 	const { isSignedIn } = useAuth();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
@@ -45,6 +46,89 @@ const Header = () => {
 	};
 
 	return (
+		<>
+			<nav className="hidden md:flex items-center gap-1">
+				{navLinks.map((link) => (
+					<Link
+						key={link.href}
+						href={link.href}
+						className={`px-3 py-1.5 rounded-md text-sm font-semibold transition-colors cursor-pointer ${
+							isLinkActive(link)
+								? "text-primary bg-primary/8"
+								: "text-foreground hover:text-primary hover:bg-primary/5"
+						}`}>
+						{link.label}
+					</Link>
+				))}
+			</nav>
+
+			<div className="flex items-center gap-1">
+				<SignedIn>
+					<Button
+						variant="ghost"
+						size="icon"
+						className="rounded-full cursor-pointer">
+						<UserButton />
+					</Button>
+				</SignedIn>
+				<SignedOut>
+					<Button
+						variant="ghost"
+						size="icon"
+						className="rounded-full cursor-pointer"
+						onClick={handleUserButtonClick}>
+						<User className="w-[18px] h-[18px]" />
+					</Button>
+				</SignedOut>
+				<Link href="/cart">
+					<Button
+						variant="ghost"
+						size="icon"
+						className="relative rounded-full cursor-pointer">
+						<ShoppingBag className="w-[18px] h-[18px]" />
+						{cartLength > 0 && (
+							<span className="-top-0.5 -right-0.5 absolute flex justify-center items-center bg-primary rounded-full w-4 h-4 font-semibold text-[9px] text-primary-foreground">
+								{cartLength}
+							</span>
+						)}
+					</Button>
+				</Link>
+				<ThemeToggle />
+			</div>
+		</>
+	);
+}
+
+function HeaderFallback() {
+	return (
+		<>
+			<nav className="hidden md:flex items-center gap-1" aria-hidden="true">
+				{navLinks.map((link) => (
+					<Link
+						key={link.href}
+						href={link.href}
+						className="px-3 py-1.5 rounded-md text-sm font-semibold text-foreground/60">
+						{link.label}
+					</Link>
+				))}
+			</nav>
+			<div className="flex items-center gap-1">
+				<Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
+					<User className="w-[18px] h-[18px] text-muted-foreground" />
+				</Button>
+				<Link href="/cart">
+					<Button variant="ghost" size="icon" className="rounded-full cursor-pointer">
+						<ShoppingBag className="w-[18px] h-[18px] text-muted-foreground" />
+					</Button>
+				</Link>
+				<ThemeToggle />
+			</div>
+		</>
+	);
+}
+
+const Header = () => {
+	return (
 		<motion.header
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
@@ -52,55 +136,9 @@ const Header = () => {
 			className="top-0 z-50 sticky bg-background/80 backdrop-blur-xl border-b border-border/60 w-full">
 			<div className="flex justify-between items-center mx-auto px-6 sm:px-8 lg:px-12 py-4 max-w-7xl">
 				<Logo variant="header" />
-
-				<nav className="hidden md:flex items-center gap-1">
-					{navLinks.map((link) => (
-						<Link
-							key={link.href}
-							href={link.href}
-							className={`px-3 py-1.5 rounded-md text-sm font-semibold transition-colors cursor-pointer ${
-								isLinkActive(link)
-									? "text-primary bg-primary/8"
-									: "text-foreground hover:text-primary hover:bg-primary/5"
-							}`}>
-							{link.label}
-						</Link>
-					))}
-				</nav>
-
-				<div className="flex items-center gap-1">
-					<SignedIn>
-						<Button
-							variant="ghost"
-							size="icon"
-							className="rounded-full cursor-pointer">
-							<UserButton />
-						</Button>
-					</SignedIn>
-					<SignedOut>
-						<Button
-							variant="ghost"
-							size="icon"
-							className="rounded-full cursor-pointer"
-							onClick={handleUserButtonClick}>
-							<User className="w-[18px] h-[18px]" />
-						</Button>
-					</SignedOut>
-					<Link href="/cart">
-						<Button
-							variant="ghost"
-							size="icon"
-							className="relative rounded-full cursor-pointer">
-							<ShoppingBag className="w-[18px] h-[18px]" />
-							{cartLength > 0 && (
-								<span className="-top-0.5 -right-0.5 absolute flex justify-center items-center bg-primary rounded-full w-4 h-4 font-semibold text-[9px] text-primary-foreground">
-									{cartLength}
-								</span>
-							)}
-						</Button>
-					</Link>
-					<ThemeToggle />
-				</div>
+				<Suspense fallback={<HeaderFallback />}>
+					<HeaderContent />
+				</Suspense>
 			</div>
 		</motion.header>
 	);

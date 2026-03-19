@@ -1,7 +1,6 @@
 {
 	"name": "order",
 	"version": "1.0.0",
-	"type": "module",
 	"private": true,
 	"scripts": {
 		"dev": "tsx watch src/index.ts",
@@ -26,7 +25,7 @@
 	},
 	"devDependencies": {
 		"@beatros/typescript-config": "workspace:*",
-		"@shared": "workspace:*",
+		"shared": "workspace:*",
 		"@types/cors": "^2.8.19",
 		"@types/express": "^5.0.3",
 		"@types/morgan": "^1.9.10",

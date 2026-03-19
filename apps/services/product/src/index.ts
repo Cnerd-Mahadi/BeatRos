@@ -1,10 +1,9 @@
-import logger from "@shared/src/logger";
-import { HttpError } from "@shared/src/response";
 import cors from "cors";
 import dotenv from "dotenv";
 import type { NextFunction, Request, Response } from "express";
 import express from "express";
 import morgan from "morgan";
+import { logger, HttpError } from "shared";
 import { _env } from "./env";
 import { productRouter } from "./route";
 

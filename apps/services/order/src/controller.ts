@@ -1,6 +1,5 @@
-import logger from "@shared/src/logger";
-import { isError, STATUS } from "@shared/src/response";
 import type { NextFunction, Request, Response } from "express";
+import { logger, isError, STATUS } from "shared";
 import { OrderStatus } from "../generated/prisma";
 import { prisma } from "./db";
 import { _env } from "./env";

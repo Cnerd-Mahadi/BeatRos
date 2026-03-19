@@ -1,7 +1,6 @@
 import { getAuth } from "@clerk/express";
-import logger from "@shared/src/logger";
-import { HttpError, isError, STATUS } from "@shared/src/response";
 import { Request } from "express";
+import { logger, HttpError, isError, STATUS } from "shared";
 import { ANONYMOUS_SESSION_ID_COOKIE, userType } from "../constant";
 import { _env } from "../env";
 import { api } from "../lib/axios";
@@ -27,7 +26,7 @@ export function getCurrentSession(req: Request) {
 export function validateCart(
 	products: Omit<ProductType, "inventory">[],
 	inventories: InventoryType[],
-	cartItems: CartItem[]
+	cartItems: CartItem[],
 ) {
 	let insufficient = false;
 	const inventoriesMap = new Map(inventories.map((i) => [i.id, i]));
