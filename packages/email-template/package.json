@@ -3,8 +3,8 @@
 	"version": "1.0.0",
 	"private": true,
 	"scripts": {
-		"dev": "tsx watch src/index.ts",
-		"build": "tsc"
+		"build": "tsc",
+		"check-types": "tsc --noEmit"
 	},
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",

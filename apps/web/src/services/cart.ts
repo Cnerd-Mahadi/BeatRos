@@ -1,4 +1,4 @@
-import { api } from "@/lib/axios";
+import { api, serverApi } from "@/lib/axios";
 import { cartSchema } from "@/types/cart";
 import z from "zod";
 
@@ -23,14 +23,7 @@ export async function getCart() {
 }
 
 export async function transferCart(sessionId: string, token: string) {
-	const authedApi = () => {
-		api.interceptors.request.use((config) => {
-			config.headers.Authorization = `Bearer ${token}`;
-			return config;
-		});
-		return api;
-	};
-	const response = await authedApi().post(
+	const response = await serverApi(token).post(
 		`/cart/transfer?session_id=${sessionId}`,
 	);
 	const cartIdSchema = z.string().min(1);

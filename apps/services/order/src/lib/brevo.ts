@@ -1,7 +1,7 @@
 import { _env } from "../env";
 import { api } from "./axios";
 
-export const sendEmail = async ({
+export const dispatchEmail = async ({
 	to,
 	subject,
 	html,

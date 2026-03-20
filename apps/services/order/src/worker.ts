@@ -4,7 +4,7 @@ import { isError, logger, STATUS } from "shared";
 import { prisma } from "./db";
 import { _env } from "./env";
 import { api } from "./lib/axios";
-import { sendEmail } from "./lib/brevo";
+import { dispatchEmail } from "./lib/brevo";
 import { releaseStockSchema, sendEmailSchema } from "./type";
 
 export const sendEmail = async (
@@ -42,7 +42,7 @@ export const sendEmail = async (
 			order.totalAmount.toNumber(),
 		);
 
-		await sendEmail({ to: email, subject: "Order Confirmation", html: emailTemplate });
+		await dispatchEmail({ to: email, subject: "Order Confirmation", html: emailTemplate });
 
 		logger.info("Order confirmation email is sent", {
 			orderId,

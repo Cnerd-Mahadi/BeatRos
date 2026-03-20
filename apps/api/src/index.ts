@@ -1,14 +1,11 @@
 import { clerkMiddleware } from "@clerk/express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
 import { HttpError, logger } from "shared";
 import { _env } from "./env";
 import router from "./routes";
-
-dotenv.config();
 
 const app = express();
 
