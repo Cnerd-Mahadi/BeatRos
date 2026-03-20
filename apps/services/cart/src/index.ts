@@ -19,6 +19,10 @@ app.get("/health", (_req, res) => {
 	res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+app.head("/ping", (_req, res) => {
+	res.status(200).end();
+});
+
 app.use("/api/cart", cartRouter);
 
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
