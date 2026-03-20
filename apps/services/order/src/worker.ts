@@ -1,10 +1,10 @@
-import axios from "axios";
 import { orderConfirmationTemplate } from "email-template";
 import type { NextFunction, Request, Response } from "express";
-import { Resend } from "resend";
 import { isError, logger, STATUS } from "shared";
 import { prisma } from "./db";
 import { _env } from "./env";
+import { api } from "./lib/axios";
+import { sendEmail } from "./lib/brevo";
 import { releaseStockSchema, sendEmailSchema } from "./type";
 
 export const sendEmail = async (
@@ -36,19 +36,13 @@ export const sendEmail = async (
 			orderId: orderId,
 		});
 
-		const resend = new Resend(_env.RESEND_API_KEY);
 		const emailTemplate = await orderConfirmationTemplate(
 			orderId,
 			lineItems,
 			order.totalAmount.toNumber(),
 		);
 
-		await resend.emails.send({
-			from: _env.MAIL_FROM,
-			to: email,
-			subject: "Order Confirmation",
-			html: emailTemplate,
-		});
+		await sendEmail({ to: email, subject: "Order Confirmation", html: emailTemplate });
 
 		logger.info("Order confirmation email is sent", {
 			orderId,
@@ -90,7 +84,7 @@ export const releaseStock = async (
 			orderId: orderId,
 		});
 
-		const response = await axios.post(
+		const response = await api.post(
 			`${_env.INVENTORY_SERVICE_URL}/api/inventory/release`,
 			lineItems,
 		);

@@ -17,12 +17,8 @@ const envSchema = z.object({
 	CHECKOUT_SUCCESS_URL: z.string(),
 	CHECKOUT_FAILURE_URL: z.string(),
 	QSTASH_TOKEN: z.string(),
-	MAIL_PORT: z.coerce.number(),
-	MAIL_HOST: z.string(),
-	MAIL_USERNAME: z.string(),
-	MAIL_PASSWORD: z.string(),
-	RESEND_API_KEY: z.string(),
-	MAIL_FROM: z.string().default('"BeatRos" <noreply@beatros.com>'),
+	BREVO_API_KEY: z.string(),
+	MAIL_FROM: z.string().default("noreply@beatros.com"),
 });
 
 export const _env = envSchema.parse(process.env);
