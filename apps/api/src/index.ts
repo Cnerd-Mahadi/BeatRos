@@ -4,13 +4,17 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
-import { logger, HttpError } from "shared";
+import { HttpError, logger } from "shared";
 import { _env } from "./env";
 import router from "./routes";
 
 dotenv.config();
 
 const app = express();
+
+app.head("/ping", (_req, res) => {
+	res.status(200).end();
+});
 
 app.use(cookieParser());
 app.use(clerkMiddleware());
@@ -29,10 +33,6 @@ app.get("/", (_req, res) => {
 
 app.get("/health", (_req, res) => {
 	res.json({ status: "ok", timestamp: new Date().toISOString() });
-});
-
-app.head("/ping", (_req, res) => {
-	res.status(200).end();
 });
 
 app.use("/api/v1", router);
