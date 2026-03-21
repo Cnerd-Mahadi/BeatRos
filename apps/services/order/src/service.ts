@@ -20,6 +20,8 @@ export const createCheckoutSession = async (
 			},
 		},
 	}));
+	const appBaseUrl = new URL(_env.CHECKOUT_SUCCESS_URL).origin;
+
 	const checkoutSession = await stripe.checkout.sessions.create({
 		payment_method_types: ["card"],
 		line_items: stripeLineItems,
@@ -30,9 +32,15 @@ export const createCheckoutSession = async (
 		},
 		mode: "payment",
 		success_url: `${_env.CHECKOUT_SUCCESS_URL}?sessionId={CHECKOUT_SESSION_ID}`,
-		cancel_url: `${_env.CHECKOUT_FAILURE_URL}?sessionId={CHECKOUT_SESSION_ID}`,
+		cancel_url: `${appBaseUrl}/checkout`,
 		customer_email: email,
 		customer_creation: "always",
+		custom_text: {
+			submit: {
+				message:
+					"TEST MODE: Use card 4242 4242 4242 4242 · Any future expiry · Any 3-digit CVC",
+			},
+		},
 	});
 
 	return checkoutSession;

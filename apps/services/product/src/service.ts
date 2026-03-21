@@ -46,7 +46,7 @@ export const filterProducts = (req: Request) => {
 	if (filterQuery.category) {
 		where.productCategories = {
 			some: {
-				categoryID: filterQuery.category,
+				category: { slug: filterQuery.category },
 			},
 		};
 	}

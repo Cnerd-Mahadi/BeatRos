@@ -1,6 +1,7 @@
 import { orderConfirmationTemplate } from "email-template";
 import type { NextFunction, Request, Response } from "express";
 import { isError, logger, STATUS } from "shared";
+import { OrderStatus } from "../generated/prisma";
 import { prisma } from "./db";
 import { _env } from "./env";
 import { api } from "./lib/axios";
@@ -71,6 +72,15 @@ export const releaseStock = async (
 		const order = await prisma.order.findFirst({ where: { id: orderId } });
 		if (!order) {
 			return res.status(STATUS.NOT_FOUND).json({ error: "No order found" });
+		}
+
+		// Already handled (cancelled on retry or confirmed) — skip
+		if (order.status !== OrderStatus.PENDING) {
+			logger.info("Order is not PENDING, skipping stock release", {
+				orderId,
+				status: order.status,
+			});
+			return res.status(STATUS.OK).json({ data: orderId });
 		}
 
 		const orderItems = await prisma.orderItem.findMany({ where: { orderId } });

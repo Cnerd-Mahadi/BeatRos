@@ -25,6 +25,52 @@ export const createOrder = async (
 		const { lineItems, shippingAddress, userId, cartId, email } =
 			parsedBody.data;
 
+		// Cancel any existing PENDING order for this user (abandoned retry)
+		const existingPendingOrder = await prisma.order.findFirst({
+			where: { userId, status: OrderStatus.PENDING },
+			include: { orderItems: true },
+		});
+		if (existingPendingOrder) {
+			logger.info("Cancelling abandoned PENDING order for retry", {
+				orderId: existingPendingOrder.id,
+			});
+
+			// Cancel the QStash release job if we have the messageId
+			if (existingPendingOrder.qstashMessageId) {
+				try {
+					await qstashClient.messages.delete(existingPendingOrder.qstashMessageId);
+					logger.info("QStash release job cancelled", {
+						messageId: existingPendingOrder.qstashMessageId,
+					});
+				} catch {
+					// Job may have already fired or expired — safe to ignore
+					logger.info("QStash job already gone, skipping", {
+						messageId: existingPendingOrder.qstashMessageId,
+					});
+				}
+			}
+
+			// Release reserved inventory
+			const abandonedLineItems = existingPendingOrder.orderItems.map((o) => ({
+				productId: o.productId,
+				inventoryId: o.inventoryId,
+				quantity: o.quantity,
+			}));
+			await api.post(
+				`${_env.INVENTORY_SERVICE_URL}/api/inventory/release`,
+				abandonedLineItems,
+			);
+			logger.info("Inventory released for abandoned order", {
+				orderId: existingPendingOrder.id,
+			});
+
+			// Mark as CANCELLED
+			await prisma.order.update({
+				where: { id: existingPendingOrder.id },
+				data: { status: OrderStatus.FAILED },
+			});
+		}
+
 		const response = await api.post(
 			`${_env.INVENTORY_SERVICE_URL}/api/inventory/reserve`,
 			lineItems,
@@ -70,11 +116,16 @@ export const createOrder = async (
 				topic: "clear_stock_auto",
 				orderId: newOrder.id,
 			},
-			delay: "2m",
+			delay: "30m",
 		});
 		logger.info("Stock clearance message queued", {
 			messageId: releaseStockMessage.messageId,
 			orderId: newOrder.id,
+		});
+
+		await prisma.order.update({
+			where: { id: newOrder.id },
+			data: { qstashMessageId: releaseStockMessage.messageId },
 		});
 
 		const paymentSession = await createCheckoutSession(

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { addToCart } from "@/services/cart";
 import { getProduct } from "@/services/product";
 import { productDetailSchema } from "@/types/product";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
 	Check,
@@ -26,12 +26,16 @@ export default function ProductDetail() {
 	const params = useParams();
 	const router = useRouter();
 	const id = params.id as string;
+	const queryClient = useQueryClient();
 
 	const { isPending, mutate } = useMutation({
 		mutationKey: [`product/${id}/addtocart`],
 		mutationFn: async () => addToCart(id, 1),
 		onSuccess: () => toast.success("Added to cart"),
 		onError: () => toast.error("Failed to add to cart"),
+		onSettled: async () => {
+			await queryClient.invalidateQueries({ queryKey: ["cart/length"] });
+		},
 	});
 
 	const { isLoading, data } = useQuery({
@@ -83,7 +87,7 @@ export default function ProductDetail() {
 							Shop
 						</Link>
 						<ChevronRight className="w-3.5 h-3.5" />
-						<span className="text-foreground">
+						<span className="text-foreground truncate max-w-[140px] sm:max-w-none">
 							{product.title}
 						</span>
 					</nav>
@@ -150,7 +154,7 @@ export default function ProductDetail() {
 								</span>
 							</div>
 
-							<p className="font-heading font-bold text-foreground text-3xl mt-6 tabular-nums">
+							<p className="font-heading font-bold text-foreground text-2xl sm:text-3xl mt-6 tabular-nums">
 								${(product.priceInCents / 100).toFixed(2)}
 							</p>
 
@@ -186,7 +190,7 @@ export default function ProductDetail() {
 									onClick={handleAddToCart}
 									disabled={isPending}
 									size="lg"
-									className="flex-1 font-semibold h-12 cursor-pointer">
+									className="flex-1 font-semibold h-11 cursor-pointer">
 									{isPending ? (
 										<Loader2 className="mr-2 w-4 h-4 animate-spin" />
 									) : (
@@ -199,7 +203,7 @@ export default function ProductDetail() {
 									disabled={isPending}
 									size="lg"
 									variant="outline"
-									className="flex-1 font-semibold h-12 cursor-pointer">
+									className="flex-1 font-semibold h-11 cursor-pointer">
 									<Zap className="mr-2 w-4 h-4" />
 									Buy Now
 								</Button>

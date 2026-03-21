@@ -6,20 +6,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import { getCart } from "@/services/cart";
 import { createOrder } from "@/services/order";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Loader2, Lock, ShoppingBag } from "lucide-react";
+import { Check, Copy, CreditCard, Loader2, Lock, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface CheckoutForm {
@@ -27,10 +21,39 @@ interface CheckoutForm {
 	email: string;
 	phone: string;
 	address: string;
-	apartment?: string;
-	city: string;
-	zip: string;
-	country: string;
+}
+
+function TestCardBanner() {
+	const [copied, setCopied] = useState(false);
+
+	const handleCopy = () => {
+		navigator.clipboard.writeText("4242424242424242");
+		setCopied(true);
+		setTimeout(() => setCopied(false), 2000);
+	};
+
+	return (
+		<div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-lg p-3 text-xs mt-6">
+			<div className="flex items-center gap-1.5 font-semibold text-amber-700 dark:text-amber-400 mb-1">
+				<CreditCard className="w-3.5 h-3.5 shrink-0" />
+				Test Mode — Use dummy card
+			</div>
+			<button
+				type="button"
+				onClick={handleCopy}
+				className="flex items-center gap-2 font-mono tracking-wide text-amber-600 dark:text-amber-500 hover:text-amber-800 dark:hover:text-amber-300 transition-colors cursor-pointer">
+				4242 4242 4242 4242
+				{copied ? (
+					<Check className="w-3 h-3 text-green-500" />
+				) : (
+					<Copy className="w-3 h-3" />
+				)}
+			</button>
+			<p className="text-amber-600/80 dark:text-amber-500/80 mt-0.5">
+				Any future expiry · Any 3-digit CVC
+			</p>
+		</div>
+	);
 }
 
 export default function Checkout() {
@@ -43,11 +66,8 @@ export default function Checkout() {
 	const {
 		register,
 		handleSubmit,
-		setValue,
 		formState: { errors },
-	} = useForm<CheckoutForm>({
-		defaultValues: { country: "us" },
-	});
+	} = useForm<CheckoutForm>();
 
 	const { isPending, mutateAsync } = useMutation({
 		mutationKey: ["order/create"],
@@ -129,15 +149,7 @@ export default function Checkout() {
 	);
 
 	async function onSubmit(formData: CheckoutForm) {
-		const shippingAddress = [
-			formData.address,
-			formData.apartment,
-			formData.city,
-			formData.zip,
-			formData.country.toUpperCase(),
-		]
-			.filter(Boolean)
-			.join(", ");
+		const shippingAddress = formData.address;
 
 		const res = await mutateAsync({
 			address: shippingAddress,
@@ -253,86 +265,7 @@ export default function Checkout() {
 											</p>
 										)}
 									</div>
-									<div>
-										<Label htmlFor="apartment">
-											Apartment, suite, etc. (optional)
-										</Label>
-										<Input
-											id="apartment"
-											className="mt-1.5"
-											{...register("apartment")}
-										/>
 									</div>
-									<div className="gap-4 grid grid-cols-2">
-										<div>
-											<Label htmlFor="city">City</Label>
-											<Input
-												id="city"
-												placeholder="New York"
-												className="mt-1.5"
-												{...register("city", {
-													required:
-														"City is required",
-												})}
-											/>
-											{errors.city && (
-												<p className="mt-1 text-destructive text-sm">
-													{errors.city.message}
-												</p>
-											)}
-										</div>
-										<div>
-											<Label htmlFor="zip">
-												Zip Code
-											</Label>
-											<Input
-												id="zip"
-												placeholder="10001"
-												className="mt-1.5"
-												{...register("zip", {
-													required:
-														"Zip code is required",
-												})}
-											/>
-											{errors.zip && (
-												<p className="mt-1 text-destructive text-sm">
-													{errors.zip.message}
-												</p>
-											)}
-										</div>
-									</div>
-									<div>
-										<Label htmlFor="country">
-											Country
-										</Label>
-										<Select
-											defaultValue="us"
-											onValueChange={(val) =>
-												setValue("country", val)
-											}>
-											<SelectTrigger className="mt-1.5 cursor-pointer">
-												<SelectValue />
-											</SelectTrigger>
-											<SelectContent>
-												<SelectItem
-													value="us"
-													className="cursor-pointer">
-													United States
-												</SelectItem>
-												<SelectItem
-													value="ca"
-													className="cursor-pointer">
-													Canada
-												</SelectItem>
-												<SelectItem
-													value="mx"
-													className="cursor-pointer">
-													Mexico
-												</SelectItem>
-											</SelectContent>
-										</Select>
-									</div>
-								</div>
 							</div>
 
 							<div className="bg-primary/5 border border-primary/10 p-4 rounded-lg">
@@ -424,10 +357,12 @@ export default function Checkout() {
 								</span>
 							</div>
 
+							<TestCardBanner />
+
 							<Button
 								type="submit"
 								disabled={isPending}
-								className="mt-8 w-full font-medium h-11 cursor-pointer">
+								className="mt-4 w-full font-medium h-11 cursor-pointer">
 								{isPending ? (
 									<Loader2 className="mr-2 w-4 h-4 animate-spin" />
 								) : (

@@ -25,20 +25,27 @@ export const handleGetProducts = async (
 
 export const getProducts = async (req: Request, res: Response) => {
 	const { where, orderBy } = filterProducts(req);
-	const products = await prisma.product.findMany({
-		where,
-		orderBy,
-		include: {
-			productCategories: {
-				select: {
-					category: true,
+	const page = Math.max(1, parseInt(req.query.page as string) || 1);
+	const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string) || 40));
+	const skip = (page - 1) * limit;
+
+	const [products, total] = await Promise.all([
+		prisma.product.findMany({
+			where,
+			orderBy,
+			include: {
+				productCategories: {
+					select: {
+						category: true,
+					},
 				},
 			},
-		},
-		skip: 0,
-		take: 50,
-	});
-	return res.status(STATUS.OK).json({ data: products });
+			skip,
+			take: limit,
+		}),
+		prisma.product.count({ where }),
+	]);
+	return res.status(STATUS.OK).json({ data: products, total });
 };
 
 export const getBrands = async (req: Request, res: Response) => {

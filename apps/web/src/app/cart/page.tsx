@@ -75,6 +75,7 @@ function CartContent() {
 		},
 		onSettled: async () => {
 			await queryClient.invalidateQueries({ queryKey: ["cart"] });
+			await queryClient.invalidateQueries({ queryKey: ["cart/length"] });
 		},
 	});
 
@@ -249,71 +250,48 @@ function CartContent() {
 										},
 									}}
 									layout
-									className="flex items-center gap-4 bg-card p-4 border border-border/60 rounded-xl">
+									className="flex gap-3 bg-card p-3 sm:p-4 border border-border/60 rounded-xl">
 									<div
-										className="flex-shrink-0 bg-cover bg-center rounded-lg w-20 h-20"
+										className="flex-shrink-0 bg-cover bg-center rounded-lg w-14 h-14 sm:w-20 sm:h-20"
 										style={{
 											backgroundImage: `url(${item.imageUrl})`,
 										}}
 									/>
-									<div className="flex-1 min-w-0">
-										<h3 className="font-medium text-sm truncate">
-											{item.title}
-										</h3>
-										<p className="text-muted-foreground text-sm tabular-nums">
-											$
-											{(
-												item.priceInCents / 100
-											).toFixed(2)}
+									<div className="flex flex-col flex-1 min-w-0 gap-1.5">
+										<div className="flex items-start justify-between gap-2">
+											<h3 className="font-medium text-sm leading-tight line-clamp-2">
+												{item.title}
+											</h3>
+											<button
+												className="flex-shrink-0 -mt-0.5 -mr-0.5 p-1 text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
+												onClick={() => handleItemRemoved(item.id)}>
+												<Trash2 className="w-3.5 h-3.5" />
+											</button>
+										</div>
+										<p className="text-muted-foreground text-xs tabular-nums">
+											${(item.priceInCents / 100).toFixed(2)} each
 										</p>
+										<div className="flex items-center justify-between mt-auto">
+											<div className="flex items-center gap-1.5">
+												<button
+													className="flex items-center justify-center rounded-full w-6 h-6 border border-border/60 hover:border-primary text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+													onClick={() => handleDecreaseQuantity(item.id, item.quantity)}>
+													<Minus className="w-2.5 h-2.5" />
+												</button>
+												<span className="w-5 font-medium text-center text-xs tabular-nums">
+													{item.quantity}
+												</span>
+												<button
+													className="flex items-center justify-center rounded-full w-6 h-6 border border-border/60 hover:border-primary text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+													onClick={() => handleIncreaseQuantity(item.id, item.quantity, item.available)}>
+													<Plus className="w-2.5 h-2.5" />
+												</button>
+											</div>
+											<span className="font-semibold text-sm tabular-nums">
+												${((item.priceInCents * item.quantity) / 100).toFixed(2)}
+											</span>
+										</div>
 									</div>
-									<div className="flex items-center gap-2">
-										<Button
-											variant="outline"
-											size="icon"
-											className="rounded-full w-8 h-8 cursor-pointer"
-											onClick={() =>
-												handleDecreaseQuantity(
-													item.id,
-													item.quantity
-												)
-											}>
-											<Minus className="w-3.5 h-3.5" />
-										</Button>
-										<span className="w-8 font-medium text-center text-sm tabular-nums">
-											{item.quantity}
-										</span>
-										<Button
-											variant="outline"
-											size="icon"
-											className="rounded-full w-8 h-8 cursor-pointer"
-											onClick={() =>
-												handleIncreaseQuantity(
-													item.id,
-													item.quantity,
-													item.available
-												)
-											}>
-											<Plus className="w-3.5 h-3.5" />
-										</Button>
-									</div>
-									<div className="font-medium text-sm text-right tabular-nums min-w-[72px]">
-										$
-										{(
-											(item.priceInCents *
-												item.quantity) /
-											100
-										).toFixed(2)}
-									</div>
-									<Button
-										variant="ghost"
-										size="icon"
-										className="text-muted-foreground hover:text-destructive cursor-pointer"
-										onClick={() =>
-											handleItemRemoved(item.id)
-										}>
-										<Trash2 className="w-4 h-4" />
-									</Button>
 								</motion.div>
 							))}
 						</motion.div>

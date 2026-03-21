@@ -3,13 +3,14 @@
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { getCartLength } from "@/services/cart";
 import { SignedIn, SignedOut, UserButton, useAuth } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ShoppingBag, User } from "lucide-react";
+import { Menu, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const navLinks = [
@@ -24,6 +25,7 @@ function HeaderContent() {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const router = useRouter();
+	const [mobileOpen, setMobileOpen] = useState(false);
 	const { data: cartLength = 0 } = useQuery({
 		queryKey: ["cart/length"],
 		queryFn: getCartLength,
@@ -47,6 +49,7 @@ function HeaderContent() {
 
 	return (
 		<>
+			{/* Desktop nav */}
 			<nav className="hidden md:flex items-center gap-1">
 				{navLinks.map((link) => (
 					<Link
@@ -94,6 +97,35 @@ function HeaderContent() {
 					</Button>
 				</Link>
 				<ThemeToggle />
+
+				{/* Mobile hamburger */}
+				<Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+					<SheetTrigger asChild>
+						<Button
+							variant="ghost"
+							size="icon"
+							className="md:hidden rounded-full cursor-pointer">
+							<Menu className="w-[18px] h-[18px]" />
+						</Button>
+					</SheetTrigger>
+					<SheetContent side="right" className="w-64 pt-12">
+						<nav className="flex flex-col gap-1">
+							{navLinks.map((link) => (
+								<Link
+									key={link.href}
+									href={link.href}
+									onClick={() => setMobileOpen(false)}
+									className={`px-3 py-2.5 rounded-md text-sm font-semibold transition-colors cursor-pointer ${
+										isLinkActive(link)
+											? "text-primary bg-primary/8"
+											: "text-foreground hover:text-primary hover:bg-primary/5"
+									}`}>
+									{link.label}
+								</Link>
+							))}
+						</nav>
+					</SheetContent>
+				</Sheet>
 			</div>
 		</>
 	);

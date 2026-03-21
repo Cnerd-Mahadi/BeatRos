@@ -28,7 +28,7 @@ const ProductCard = ({
 					/>
 				</div>
 				<div className="mt-4 space-y-1">
-					<h3 className="font-semibold text-foreground text-[15px] leading-snug tracking-tight group-hover:text-primary transition-colors">
+					<h3 className="font-semibold text-foreground text-sm sm:text-[15px] leading-snug tracking-tight group-hover:text-primary transition-colors">
 						{title}
 					</h3>
 					{description && (
@@ -36,7 +36,7 @@ const ProductCard = ({
 							{description}
 						</p>
 					)}
-					<p className="font-bold text-foreground text-[15px] pt-1">
+					<p className="font-bold text-foreground text-sm sm:text-[15px] pt-1">
 						${(priceInCents / 100).toFixed(2)}
 					</p>
 				</div>

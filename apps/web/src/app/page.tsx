@@ -6,19 +6,20 @@ import ProductCard from "@/components/ProductCard";
 import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import { Button } from "@/components/ui/button";
 import { getProducts } from "@/services/product";
+import { SignedOut } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { ArrowRight, Headphones, Shield, Truck } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
-	const { isLoading, data: products = [] } = useQuery({
+	const { isLoading, data: result } = useQuery({
 		queryKey: ["products"],
 		queryFn: () => getProducts(),
 	});
 
-	const featuredProducts = products.slice(0, 3);
-	const bestSellers = products.slice(0, 4);
+	const featuredProducts = result?.data.slice(0, 3) ?? [];
+	const bestSellers = result?.data.slice(0, 4) ?? [];
 
 	return (
 		<div className="flex flex-col w-full min-h-screen">
@@ -45,12 +46,12 @@ export default function Home() {
 						<p className="text-white/90 text-sm font-medium uppercase tracking-[0.2em] mb-5">
 							Premium Audio
 						</p>
-						<h1 className="text-display-lg sm:text-display-lg tracking-[-0.04em] font-heading">
+						<h1 className="text-4xl sm:text-display-lg tracking-[-0.04em] font-heading">
 							Immerse Yourself
 							<br />
 							in Sound
 						</h1>
-						<p className="mt-6 text-white/90 text-lg max-w-xl mx-auto leading-relaxed">
+						<p className="mt-6 text-white/90 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
 							Premium headphones and audio gear, crafted for those
 							who hear the difference.
 						</p>
@@ -117,7 +118,7 @@ export default function Home() {
 				</section>
 
 				{/* Featured Products */}
-				<section className="py-24 sm:py-28">
+				<section className="bg-muted/40 py-24 sm:py-28">
 					<div className="mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl">
 						<motion.div
 							initial={{ opacity: 0, y: 16 }}
@@ -204,7 +205,7 @@ export default function Home() {
 				</section>
 
 				{/* Best Sellers */}
-				<section className="bg-muted/40 py-24 sm:py-28">
+				<section className="py-24 sm:py-28">
 					<div className="mx-auto px-6 sm:px-8 lg:px-12 max-w-7xl">
 						<motion.div
 							initial={{ opacity: 0, y: 16 }}
@@ -235,7 +236,7 @@ export default function Home() {
 						</motion.div>
 						<motion.div
 							key={`bestsellers-${bestSellers.length}`}
-							className="gap-x-6 gap-y-10 xl:gap-x-8 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4"
+							className="gap-x-6 gap-y-10 xl:gap-x-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
 							initial="hidden"
 							animate={isLoading ? "hidden" : "visible"}
 							variants={{
@@ -290,36 +291,38 @@ export default function Home() {
 					</div>
 				</section>
 
-				{/* CTA Banner */}
-				<section className="relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 py-24 sm:py-28">
-					<div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(217_70%_55%_/_0.15)_0%,_transparent_60%)]" />
-					<motion.div
-						className="relative mx-auto px-6 sm:px-8 lg:px-12 max-w-3xl text-center"
-						initial={{ opacity: 0, y: 16 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						viewport={{ once: true, amount: 0.3 }}
-						transition={{
-							duration: 0.5,
-							ease: [0.16, 1, 0.3, 1],
-						}}>
-						<h2 className="text-heading-lg text-white tracking-tight">
-							Join the BeatRos Community
-						</h2>
-						<p className="mt-4 text-slate-300 text-base leading-relaxed">
-							Get early access to new products, exclusive offers,
-							and curated audio content.
-						</p>
-						<div className="mt-8">
-							<Link href="/auth/sign-up">
-								<Button
-									size="lg"
-									className="font-semibold text-sm px-8 h-12 bg-white text-slate-900 hover:bg-slate-100 cursor-pointer">
-									Create Account
-								</Button>
-							</Link>
-						</div>
-					</motion.div>
-				</section>
+				{/* CTA Banner — only for guests */}
+				<SignedOut>
+					<section className="relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 py-24 sm:py-28">
+						<div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_hsl(217_70%_55%_/_0.15)_0%,_transparent_60%)]" />
+						<motion.div
+							className="relative mx-auto px-6 sm:px-8 lg:px-12 max-w-3xl text-center"
+							initial={{ opacity: 0, y: 16 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true, amount: 0.3 }}
+							transition={{
+								duration: 0.5,
+								ease: [0.16, 1, 0.3, 1],
+							}}>
+							<h2 className="text-heading-lg text-white tracking-tight">
+								Join the BeatRos Community
+							</h2>
+							<p className="mt-4 text-slate-300 text-base leading-relaxed">
+								Get early access to new products, exclusive offers,
+								and curated audio content.
+							</p>
+							<div className="mt-8">
+								<Link href="/auth/sign-up">
+									<Button
+										size="lg"
+										className="font-semibold text-sm px-8 h-12 bg-white text-slate-900 hover:bg-slate-100 cursor-pointer">
+										Join Now
+									</Button>
+								</Link>
+							</div>
+						</motion.div>
+					</section>
+				</SignedOut>
 			</main>
 			<Footer />
 		</div>
