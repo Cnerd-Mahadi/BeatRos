@@ -114,7 +114,7 @@ function ProductsContent() {
 				queryKey: ["products", filters],
 				queryFn: () => getProducts(filters),
 				staleTime: 30_000,
-				placeholderData: (prev: typeof serverResult) => prev,
+				placeholderData: (prev: Awaited<ReturnType<typeof getProducts>> | undefined) => prev,
 			},
 			{ queryKey: ["categories"], queryFn: getCategories },
 			{ queryKey: ["brands"], queryFn: getBrands },
