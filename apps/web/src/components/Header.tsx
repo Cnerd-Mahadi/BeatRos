@@ -4,7 +4,7 @@ import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { getCartLength } from "@/services/cart";
+import { useServices } from "@/hooks/use-services";
 import { SignedIn, SignedOut, UserButton, useAuth } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -26,9 +26,10 @@ function HeaderContent() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const [mobileOpen, setMobileOpen] = useState(false);
+	const { cart } = useServices();
 	const { data: cartLength = 0 } = useQuery({
 		queryKey: ["cart/length"],
-		queryFn: getCartLength,
+		queryFn: () => cart.getCartLength(),
 	});
 
 	const handleUserButtonClick = () => {

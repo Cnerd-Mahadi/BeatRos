@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { addToCart, getCart } from "@/services/cart";
+import { useServices } from "@/hooks/use-services";
 import { cartSchema } from "@/types/cart";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -57,9 +57,10 @@ function CartPageSkeleton() {
 
 function CartContent() {
 	const queryClient = useQueryClient();
+	const { cart: cartService } = useServices();
 	const { isLoading, data } = useQuery({
 		queryKey: ["cart"],
-		queryFn: getCart,
+		queryFn: () => cartService.getCart(),
 	});
 	const { mutate } = useMutation({
 		mutationKey: [`product/update_quantity`],
@@ -69,7 +70,7 @@ function CartContent() {
 		}: {
 			id: string;
 			updatedQuantity: number;
-		}) => addToCart(id, updatedQuantity),
+		}) => cartService.addToCart(id, updatedQuantity),
 		onError: () => {
 			toast.error("Failed to update cart");
 		},

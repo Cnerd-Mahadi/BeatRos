@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import ProductCard from "@/components/ProductCard";
 import ProductCardSkeleton from "@/components/ProductCardSkeleton";
 import { Button } from "@/components/ui/button";
-import { getProducts } from "@/services/product";
+import { useServices } from "@/hooks/use-services";
 import { SignedOut } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -13,9 +13,10 @@ import { ArrowRight, Headphones, Shield, Truck } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
+	const { product } = useServices();
 	const { isLoading, data: result } = useQuery({
 		queryKey: ["products"],
-		queryFn: () => getProducts(),
+		queryFn: () => product.getProducts(),
 	});
 
 	const featuredProducts = result?.data.slice(0, 3) ?? [];

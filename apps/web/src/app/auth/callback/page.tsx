@@ -1,4 +1,4 @@
-import { getServices } from "@/lib/services";
+import { getServices } from "@/lib/services.server";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 

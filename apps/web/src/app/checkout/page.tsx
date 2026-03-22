@@ -6,8 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getCart } from "@/services/cart";
-import { createOrder } from "@/services/order";
+import { useServices } from "@/hooks/use-services";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Check, Copy, CreditCard, Loader2, Lock, ShoppingBag } from "lucide-react";
@@ -58,9 +57,10 @@ function TestCardBanner() {
 
 export default function Checkout() {
 	const router = useRouter();
+	const { cart: cartService, order: orderService } = useServices();
 	const { isLoading, data } = useQuery({
 		queryKey: ["cart"],
-		queryFn: getCart,
+		queryFn: () => cartService.getCart(),
 	});
 
 	const {
@@ -71,7 +71,7 @@ export default function Checkout() {
 
 	const { isPending, mutateAsync } = useMutation({
 		mutationKey: ["order/create"],
-		mutationFn: createOrder,
+		mutationFn: (data: { address: string; email: string }) => orderService.createOrder(data),
 	});
 
 	if (isLoading) {

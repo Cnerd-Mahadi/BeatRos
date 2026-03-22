@@ -4,8 +4,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import ProductDetailSkeleton from "@/components/ProductDetailSkeleton";
 import { Button } from "@/components/ui/button";
-import { addToCart } from "@/services/cart";
-import { getProduct } from "@/services/product";
+import { useServices } from "@/hooks/use-services";
 import { productDetailSchema } from "@/types/product";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -27,10 +26,11 @@ export default function ProductDetail() {
 	const router = useRouter();
 	const id = params.id as string;
 	const queryClient = useQueryClient();
+	const { cart: cartService, product: productService } = useServices();
 
 	const { isPending, mutate } = useMutation({
 		mutationKey: [`product/${id}/addtocart`],
-		mutationFn: async () => addToCart(id, 1),
+		mutationFn: async () => cartService.addToCart(id, 1),
 		onSuccess: () => toast.success("Added to cart"),
 		onError: () => toast.error("Failed to add to cart"),
 		onSettled: async () => {
@@ -40,7 +40,7 @@ export default function ProductDetail() {
 
 	const { isLoading, data } = useQuery({
 		queryKey: [`product/${id}`],
-		queryFn: async () => await getProduct(id),
+		queryFn: () => productService.getProduct(id),
 	});
 
 	if (isLoading) {

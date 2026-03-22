@@ -16,12 +16,8 @@ import {
 } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Slider } from "@/components/ui/slider";
-import {
-	getBrands,
-	getCategories,
-	getProducts,
-	type ProductFilters,
-} from "@/services/product";
+import { useServices } from "@/hooks/use-services";
+import { type ProductFilters } from "@/services/product";
 import { useQueries } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { PackageOpen, SlidersHorizontal } from "lucide-react";
@@ -108,16 +104,17 @@ function ProductsContent() {
 		return f;
 	}, [serverPage, categorySlug, brandParam, sortParam, minPrice, maxPrice]);
 
+	const { product } = useServices();
 	const results = useQueries({
 		queries: [
 			{
 				queryKey: ["products", filters],
-				queryFn: () => getProducts(filters),
+				queryFn: () => product.getProducts(filters),
 				staleTime: 30_000,
-				placeholderData: (prev: Awaited<ReturnType<typeof getProducts>> | undefined) => prev,
+				placeholderData: (prev: Awaited<ReturnType<typeof product.getProducts>> | undefined) => prev,
 			},
-			{ queryKey: ["categories"], queryFn: getCategories },
-			{ queryKey: ["brands"], queryFn: getBrands },
+			{ queryKey: ["categories"], queryFn: () => product.getCategories() },
+			{ queryKey: ["brands"], queryFn: () => product.getBrands() },
 		],
 	});
 
