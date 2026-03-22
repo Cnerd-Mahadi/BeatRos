@@ -1,6 +1,10 @@
-import { api } from "@/lib/axios";
+import type { AxiosInstance } from "axios";
 
-export async function createOrder(data: { address: string; email: string }) {
-	const response = await api.post(`/order/create`, data);
-	return response.data;
+export class OrderService {
+	constructor(private api: AxiosInstance) {}
+
+	async createOrder(data: { address: string; email: string }) {
+		const response = await this.api.post("/order/create", data);
+		return response.data;
+	}
 }

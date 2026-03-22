@@ -1,33 +1,33 @@
-import { api, serverApi } from "@/lib/axios";
+import type { AxiosInstance } from "axios";
 import { cartSchema } from "@/types/cart";
 import z from "zod";
 
-export async function addToCart(productId: string, quantity: number) {
-	const response = await api.post(`/cart/add-product`, { quantity, productId });
-	return response.data;
-}
+export class CartService {
+	constructor(private api: AxiosInstance) {}
 
-export async function getCartLength() {
-	const response = await api.get(`/cart/length`);
-	const cartLengthSchema = z.number();
-	const parsed = cartLengthSchema.safeParse(response.data.data);
-	if (!parsed.success) throw new Error(parsed.error.message);
-	return parsed.data;
-}
+	async getCartLength() {
+		const response = await this.api.get("/cart/length");
+		const parsed = z.number().safeParse(response.data.data);
+		if (!parsed.success) throw new Error(parsed.error.message);
+		return parsed.data;
+	}
 
-export async function getCart() {
-	const response = await api.get(`/cart`);
-	const parsed = cartSchema.safeParse(response.data.data);
-	if (!parsed.success) throw new Error(parsed.error.message);
-	return parsed.data;
-}
+	async getCart() {
+		const response = await this.api.get("/cart");
+		const parsed = cartSchema.safeParse(response.data.data);
+		if (!parsed.success) throw new Error(parsed.error.message);
+		return parsed.data;
+	}
 
-export async function transferCart(sessionId: string, token: string) {
-	const response = await serverApi(token).post(
-		`/cart/transfer?session_id=${sessionId}`,
-	);
-	const cartIdSchema = z.string().min(1);
-	const parsed = cartIdSchema.safeParse(response.data.data);
-	if (!parsed.success) throw new Error(parsed.error.message);
-	return !!parsed.data;
+	async addToCart(productId: string, quantity: number) {
+		const response = await this.api.post("/cart/add-product", { productId, quantity });
+		return response.data;
+	}
+
+	async transferCart(sessionId: string) {
+		const response = await this.api.post(`/cart/transfer?session_id=${sessionId}`);
+		const parsed = z.string().min(1).safeParse(response.data.data);
+		if (!parsed.success) throw new Error(parsed.error.message);
+		return !!parsed.data;
+	}
 }
