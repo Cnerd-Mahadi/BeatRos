@@ -31,7 +31,7 @@ export default function Home() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-					className="relative flex items-end bg-cover bg-no-repeat bg-[center_30%] sm:bg-center min-h-screen"
+					className="relative flex items-end bg-cover bg-no-repeat bg-[center_30%] sm:bg-center min-h-[75vh] sm:min-h-screen"
 					style={{
 						backgroundImage: `url('https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=2000&auto=format&fit=crop')`,
 					}}>
