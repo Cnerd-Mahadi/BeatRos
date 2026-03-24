@@ -31,12 +31,18 @@ export default function Home() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-					className="relative flex items-center justify-center bg-cover bg-no-repeat bg-center px-6 sm:px-8 lg:px-12 min-h-[80vh]"
+					className="relative flex items-end bg-cover bg-no-repeat bg-[center_30%] sm:bg-center min-h-screen"
 					style={{
-						backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.55)), url('https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=2000&auto=format&fit=crop')`,
+						backgroundImage: `url('https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=2000&auto=format&fit=crop')`,
 					}}>
+					{/* Base dark tint always on */}
+					<div className="absolute inset-0 bg-black/40" />
+					{/* Bottom gradient — stronger on mobile */}
+					<div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent sm:from-black/70 sm:via-black/20" />
+					{/* Left gradient — desktop only */}
+					<div className="absolute inset-0 hidden sm:block bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
 					<motion.div
-						className="max-w-3xl text-white text-center"
+						className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-12 sm:pb-24"
 						initial={{ opacity: 0, y: 24 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{
@@ -44,19 +50,19 @@ export default function Home() {
 							ease: [0.16, 1, 0.3, 1],
 							delay: 0.15,
 						}}>
-						<p className="text-white/90 text-sm font-medium uppercase tracking-[0.2em] mb-5">
+						<p className="text-white/80 text-sm font-medium uppercase tracking-[0.2em] mb-4">
 							Premium Audio
 						</p>
-						<h1 className="text-4xl sm:text-display-lg tracking-[-0.04em] font-heading">
+						<h1 className="text-[2.25rem] leading-tight sm:text-display-lg tracking-[-0.04em] font-heading text-white max-w-xl">
 							Immerse Yourself
 							<br />
 							in Sound
 						</h1>
-						<p className="mt-6 text-white/90 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+						<p className="mt-5 text-white/75 text-base sm:text-lg max-w-md leading-relaxed">
 							Premium headphones and audio gear, crafted for those
 							who hear the difference.
 						</p>
-						<div className="mt-10">
+						<div className="mt-8">
 							<Link href="/products">
 								<Button
 									size="lg"
