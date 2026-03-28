@@ -64,7 +64,7 @@ COPY apps/services/cart/package.json                ./apps/services/cart/
 COPY apps/services/cart/prisma/schema.prisma        ./apps/services/cart/prisma/schema.prisma
 COPY apps/api/package.json                          ./apps/api/
 
-RUN pnpm install --frozen-lockfile --prod
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 
 # Copy built output from builder
 COPY --from=builder /app/packages/shared/dist          ./packages/shared/dist
