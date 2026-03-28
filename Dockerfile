@@ -15,11 +15,15 @@ COPY packages/email-template/package.json     ./packages/email-template/
 COPY packages/config-typescript/package.json  ./packages/config-typescript/
 COPY packages/config-eslint/package.json      ./packages/config-eslint/
 
-COPY apps/services/product/package.json    ./apps/services/product/
-COPY apps/services/inventory/package.json  ./apps/services/inventory/
-COPY apps/services/order/package.json      ./apps/services/order/
-COPY apps/services/cart/package.json       ./apps/services/cart/
-COPY apps/api/package.json                 ./apps/api/
+COPY apps/services/product/package.json             ./apps/services/product/
+COPY apps/services/product/prisma/schema.prisma     ./apps/services/product/prisma/schema.prisma
+COPY apps/services/inventory/package.json           ./apps/services/inventory/
+COPY apps/services/inventory/prisma/schema.prisma   ./apps/services/inventory/prisma/schema.prisma
+COPY apps/services/order/package.json               ./apps/services/order/
+COPY apps/services/order/prisma/schema.prisma       ./apps/services/order/prisma/schema.prisma
+COPY apps/services/cart/package.json                ./apps/services/cart/
+COPY apps/services/cart/prisma/schema.prisma        ./apps/services/cart/prisma/schema.prisma
+COPY apps/api/package.json                          ./apps/api/
 
 RUN pnpm install --frozen-lockfile
 
@@ -50,11 +54,15 @@ COPY packages/email-template/package.json     ./packages/email-template/
 COPY packages/config-typescript/package.json  ./packages/config-typescript/
 COPY packages/config-eslint/package.json      ./packages/config-eslint/
 
-COPY apps/services/product/package.json    ./apps/services/product/
-COPY apps/services/inventory/package.json  ./apps/services/inventory/
-COPY apps/services/order/package.json      ./apps/services/order/
-COPY apps/services/cart/package.json       ./apps/services/cart/
-COPY apps/api/package.json                 ./apps/api/
+COPY apps/services/product/package.json             ./apps/services/product/
+COPY apps/services/product/prisma/schema.prisma     ./apps/services/product/prisma/schema.prisma
+COPY apps/services/inventory/package.json           ./apps/services/inventory/
+COPY apps/services/inventory/prisma/schema.prisma   ./apps/services/inventory/prisma/schema.prisma
+COPY apps/services/order/package.json               ./apps/services/order/
+COPY apps/services/order/prisma/schema.prisma       ./apps/services/order/prisma/schema.prisma
+COPY apps/services/cart/package.json                ./apps/services/cart/
+COPY apps/services/cart/prisma/schema.prisma        ./apps/services/cart/prisma/schema.prisma
+COPY apps/api/package.json                          ./apps/api/
 
 RUN pnpm install --frozen-lockfile --prod
 
