@@ -61,21 +61,25 @@ COPY --from=builder /app/apps/services/product/package.json      ./apps/services
 COPY --from=builder /app/apps/services/product/node_modules      ./apps/services/product/node_modules
 COPY --from=builder /app/apps/services/product/dist              ./apps/services/product/dist
 COPY --from=builder /app/apps/services/product/prisma            ./apps/services/product/prisma
+COPY --from=builder /app/apps/services/product/generated         ./apps/services/product/generated
 
 COPY --from=builder /app/apps/services/inventory/package.json    ./apps/services/inventory/package.json
 COPY --from=builder /app/apps/services/inventory/node_modules    ./apps/services/inventory/node_modules
 COPY --from=builder /app/apps/services/inventory/dist            ./apps/services/inventory/dist
 COPY --from=builder /app/apps/services/inventory/prisma          ./apps/services/inventory/prisma
+COPY --from=builder /app/apps/services/inventory/generated       ./apps/services/inventory/generated
 
 COPY --from=builder /app/apps/services/order/package.json        ./apps/services/order/package.json
 COPY --from=builder /app/apps/services/order/node_modules        ./apps/services/order/node_modules
 COPY --from=builder /app/apps/services/order/dist                ./apps/services/order/dist
 COPY --from=builder /app/apps/services/order/prisma              ./apps/services/order/prisma
+COPY --from=builder /app/apps/services/order/generated           ./apps/services/order/generated
 
 COPY --from=builder /app/apps/services/cart/package.json         ./apps/services/cart/package.json
 COPY --from=builder /app/apps/services/cart/node_modules         ./apps/services/cart/node_modules
 COPY --from=builder /app/apps/services/cart/dist                 ./apps/services/cart/dist
 COPY --from=builder /app/apps/services/cart/prisma               ./apps/services/cart/prisma
+COPY --from=builder /app/apps/services/cart/generated            ./apps/services/cart/generated
 
 COPY --from=builder /app/apps/api/package.json                   ./apps/api/package.json
 COPY --from=builder /app/apps/api/node_modules                   ./apps/api/node_modules
