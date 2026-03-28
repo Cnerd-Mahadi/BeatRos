@@ -6,6 +6,7 @@ import morgan from "morgan";
 import { HttpError, logger } from "shared";
 import { _env } from "./env";
 import router from "./routes";
+import workerRouter from "./routes/workerRouter";
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api/v1", router);
+app.use("/api/worker", workerRouter);
 
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 	logger.error(err.message, { name: err.name, details: err.stack });
