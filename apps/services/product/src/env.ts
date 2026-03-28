@@ -6,7 +6,7 @@ dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const envSchema = z.object({
 	PORT: z.coerce.number().default(4001),
-	DATABASE_URL: z.string(),
+	PRODUCT_DATABASE_URL: z.string(),
 	INVENTORY_SERVICE_URL: z.string(),
 });
 
