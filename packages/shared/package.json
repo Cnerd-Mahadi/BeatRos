@@ -16,6 +16,8 @@
 	},
 	"dependencies": {
 		"@upstash/redis": "^1.35.3",
+		"axios": "^1.13.6",
+		"axios-retry": "^4.5.0",
 		"express": "^5.1.0",
 		"tsx": "^4.20.4",
 		"winston": "^3.18.3"

@@ -3,7 +3,7 @@ import { logger, redis, isError, STATUS } from "shared";
 import z from "zod";
 import { userType } from "./constant";
 import { _env } from "./env";
-import { api } from "./lib/axios";
+import { api } from "shared";
 import {
 	addProductToCartSchema,
 	cartSessionSchema,
@@ -97,7 +97,6 @@ export const getCart = async (
 	next: NextFunction,
 ) => {
 	try {
-		console.log(req.query);
 		const parsed = cartSessionSchema.safeParse(req.query);
 		if (!parsed.success) {
 			return res
@@ -189,15 +188,12 @@ export const transferCart = async (
 
 		const { userId, sessionId } = parsed.data;
 		const sessionCartId = getCartKey(userType.ANONYMOUS, sessionId);
-		console.log(sessionCartId, "SS");
 		const currentCart = (await redis.hgetall<CartItem>(sessionCartId)) ?? {};
 		const userCartId = getCartKey(userType.USER, userId);
 
 		if (currentCart && Object.entries(currentCart).length) {
 			const pipeline = redis.pipeline();
-			console.log(currentCart, "Cart");
 			Object.entries(currentCart).forEach(([k, v]) => {
-				console.log(k, v);
 				pipeline.hset(userCartId, {
 					[k]: v,
 				});

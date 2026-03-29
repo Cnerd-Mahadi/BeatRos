@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import { logger, STATUS } from "shared";
 import z from "zod";
 import { _env } from "../env";
-import { api } from "../lib/axios";
+import { api } from "shared";
 import { fetchCartData, getCurrentSession } from "../services/cartService";
 import { createLineItems } from "../services/orderService";
 

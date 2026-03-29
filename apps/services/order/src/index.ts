@@ -41,5 +41,5 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 });
 
 app.listen(_env.PORT, () => {
-	console.log(`Server running at http://localhost:${_env.PORT}`);
+	logger.info(`Server running at http://localhost:${_env.PORT}`);
 });

@@ -1,7 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { Router } from "express";
 import { _env } from "../env";
-import { api } from "../lib/axios";
+import { api } from "shared";
 
 const workerRouter: Router = Router();
 

@@ -1,6 +1,7 @@
 import { clerkMiddleware } from "@clerk/express";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
+import rateLimit from "express-rate-limit";
 import morgan from "morgan";
 import { HttpError, logger } from "shared";
 import { _env } from "./env";
@@ -9,6 +10,14 @@ import webhookRouter from "./routes/webhookRouter";
 import workerRouter from "./routes/workerRouter";
 
 const app = express();
+
+const limiter = rateLimit({
+	windowMs: 60 * 1000,
+	max: 100,
+	standardHeaders: true,
+	legacyHeaders: false,
+	message: { error: "Too many requests, please try again later." },
+});
 
 app.head("/ping", (_req, res) => {
 	res.status(200).end();
@@ -33,7 +42,7 @@ app.get("/health", (_req, res) => {
 	res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-app.use("/api/v1", router);
+app.use("/api/v1", limiter, router);
 app.use("/api/worker", workerRouter);
 
 app.use((err: Error, _: Request, res: Response, next: NextFunction) => {

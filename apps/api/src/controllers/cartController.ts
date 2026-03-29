@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { logger, STATUS } from "shared";
 import { _env } from "../env";
-import { api } from "../lib/axios";
+import { api } from "shared";
 import {
 	fetchCartData,
 	getCurrentSession,

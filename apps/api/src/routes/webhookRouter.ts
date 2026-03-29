@@ -3,7 +3,7 @@ import { Router } from "express";
 import Stripe from "stripe";
 import { STATUS } from "shared";
 import { _env } from "../env";
-import { api } from "../lib/axios";
+import { api } from "shared";
 
 const stripe = new Stripe(_env.STRIPE_SECRET_KEY);
 

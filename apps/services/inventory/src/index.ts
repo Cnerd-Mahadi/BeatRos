@@ -39,5 +39,5 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 });
 
 app.listen(_env.PORT, () => {
-	console.log(`Inventory service running at http://localhost:${_env.PORT}`);
+	logger.info(`Inventory service running at http://localhost:${_env.PORT}`);
 });

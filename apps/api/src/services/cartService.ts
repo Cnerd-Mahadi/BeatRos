@@ -3,7 +3,7 @@ import { Request } from "express";
 import { HttpError, isError, logger, STATUS } from "shared";
 import { SESSION_ID_HEADER, userType } from "../constant";
 import { _env } from "../env";
-import { api } from "../lib/axios";
+import { api } from "shared";
 import { CartItem } from "../types/cart";
 import { InventoryType } from "../types/inventory";
 import { ProductType } from "../types/product";

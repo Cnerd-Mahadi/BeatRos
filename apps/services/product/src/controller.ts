@@ -3,7 +3,7 @@ import { isError, STATUS } from "shared";
 import z from "zod";
 import { prisma } from "./db";
 import { _env } from "./env";
-import { api } from "./lib/axios";
+import { api } from "shared";
 import { filterProducts } from "./service";
 import { productIdsSchema } from "./type";
 

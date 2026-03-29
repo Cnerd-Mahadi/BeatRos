@@ -4,7 +4,7 @@ import { isError, logger, STATUS } from "shared";
 import { OrderStatus } from "../generated/prisma";
 import { prisma } from "./db";
 import { _env } from "./env";
-import { api } from "./lib/axios";
+import { api } from "shared";
 import { dispatchEmail } from "./lib/brevo";
 import { releaseStockSchema, sendEmailSchema } from "./type";
 

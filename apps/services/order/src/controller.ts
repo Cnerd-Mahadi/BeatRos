@@ -3,7 +3,7 @@ import { logger, isError, STATUS } from "shared";
 import { OrderStatus } from "../generated/prisma";
 import { prisma } from "./db";
 import { _env } from "./env";
-import { api } from "./lib/axios";
+import { api } from "shared";
 import { qstashClient } from "./lib/qstash";
 import { createCheckoutSession } from "./service";
 import { createOrderSchema } from "./type";

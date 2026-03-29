@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { _env } from "../env";
-import { api } from "../lib/axios";
+import { api } from "shared";
 
 export const getProducts = async (
 	req: Request,

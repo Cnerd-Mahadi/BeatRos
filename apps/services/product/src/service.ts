@@ -58,7 +58,5 @@ export const filterProducts = (req: Request) => {
 	}
 	const orderBy = processSortBy();
 
-	console.log("FILTER: ", req.url, req.query, parsedQuery.data, where, orderBy);
-
 	return { orderBy, where };
 };

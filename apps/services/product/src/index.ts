@@ -39,5 +39,5 @@ app.use((err: Error, _: Request, res: Response, next: NextFunction) => {
 });
 
 app.listen(_env.PORT, () => {
-	console.log(`Product service running at http://localhost:${_env.PORT}`);
+	logger.info(`Product service running at http://localhost:${_env.PORT}`);
 });
