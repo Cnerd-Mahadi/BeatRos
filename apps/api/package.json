@@ -13,15 +13,16 @@
 		"@clerk/express": "^1.7.45",
 		"cors": "^2.8.5",
 		"express": "^5.1.0",
+		"stripe": "^19.3.1",
 		"tsx": "^4.20.4"
 	},
 	"devDependencies": {
 		"@beatros/typescript-config": "workspace:*",
-		"shared": "workspace:*",
 		"@types/cors": "^2.8.19",
 		"@types/express": "^5.0.3",
 		"@types/morgan": "^1.9.10",
 		"@types/node": "^20.19.11",
-		"morgan": "^1.10.1"
+		"morgan": "^1.10.1",
+		"shared": "workspace:*"
 	}
 }

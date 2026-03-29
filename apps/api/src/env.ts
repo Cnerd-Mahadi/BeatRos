@@ -10,6 +10,8 @@ const envSchema = z.object({
 	INVENTORY_SERVICE_URL: z.string(),
 	CART_SERVICE_URL: z.string(),
 	ORDER_SERVICE_URL: z.string(),
+	STRIPE_SECRET_KEY: z.string(),
+	STRIPE_WEBHOOK_SECRET: z.string(),
 });
 
 export const _env = envSchema.parse(process.env);

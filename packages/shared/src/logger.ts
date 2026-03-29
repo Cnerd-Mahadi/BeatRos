@@ -3,6 +3,8 @@ import { createLogger, format, transports } from "winston";
 
 const isDev = process.env.NODE_ENV !== "production";
 
+const service = process.env.SERVICE_NAME ?? "unknown";
+
 const devFormat = format.combine(
 	format.errors({ stack: true }),
 	format.colorize(),
@@ -10,7 +12,7 @@ const devFormat = format.combine(
 	format.printf((info: Logform.TransformableInfo) => {
 		const { timestamp, level, message, ...meta } = info;
 		const extra = Object.keys(meta).length ? JSON.stringify(meta, null, 2) : "";
-		return `[[${timestamp}] ${level}: ${message}\n${extra}`;
+		return `[[${timestamp}] [${service}] ${level}: ${message}\n${extra}`;
 	})
 );
 
@@ -21,6 +23,7 @@ const prodFormat = format.combine(
 		const { timestamp, level, message, ...meta } = info;
 		return JSON.stringify({
 			timestamp,
+			service,
 			level,
 			message,
 			meta: Object.keys(meta).length ? meta : undefined,

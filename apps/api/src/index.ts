@@ -5,6 +5,7 @@ import morgan from "morgan";
 import { HttpError, logger } from "shared";
 import { _env } from "./env";
 import router from "./routes";
+import webhookRouter from "./routes/webhookRouter";
 import workerRouter from "./routes/workerRouter";
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(
 		credentials: true,
 	}),
 );
+app.use("/api/webhook", express.raw({ type: "application/json" }), webhookRouter);
 app.use(express.json());
 app.use(morgan("dev"));
 

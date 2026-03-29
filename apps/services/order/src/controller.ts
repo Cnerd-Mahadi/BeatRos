@@ -5,7 +5,6 @@ import { prisma } from "./db";
 import { _env } from "./env";
 import { api } from "./lib/axios";
 import { qstashClient } from "./lib/qstash";
-import { stripe } from "./lib/stripe";
 import { createCheckoutSession } from "./service";
 import { createOrderSchema } from "./type";
 
@@ -153,12 +152,7 @@ export const processOnCheckoutCompleted = async (
 	next: NextFunction,
 ) => {
 	try {
-		const signature = req.headers["stripe-signature"];
-		const event = stripe.webhooks.constructEvent(
-			req.body,
-			signature as string,
-			_env.STRIPE_WEBHOOK_SECRET,
-		);
+		const event = req.body as { type: string; data: { object: { payment_status: string; id: string; metadata: { orderId: string; messageId: string; cartId: string }; customer_email: string } } };
 
 		if (event.type === "checkout.session.completed") {
 			const data = event.data.object;

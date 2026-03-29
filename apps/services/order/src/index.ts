@@ -10,13 +10,8 @@ const app = express();
 app.use(cors());
 app.use(morgan("dev"));
 
-app.use(
-	"/api/webhook",
-	express.raw({ type: "application/json" }),
-	webhookRouter,
-);
-
 app.use(express.json());
+app.use("/api/webhook", webhookRouter);
 
 app.get("/", (_req, res) => {
 	res.json({ status: "🚀⚡️✨", timestamp: new Date().toISOString() });
