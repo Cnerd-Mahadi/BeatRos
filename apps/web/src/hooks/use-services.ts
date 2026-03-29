@@ -11,7 +11,7 @@ const baseURL = `${process.env.NEXT_PUBLIC_API_URL}/api/v1`;
 export function useServices() {
 	const { getToken } = useAuth();
 
-	const api = axios.create({ baseURL });
+	const api = axios.create({ baseURL, withCredentials: true });
 
 	api.interceptors.request.use(async (config) => {
 		const token = await getToken();
