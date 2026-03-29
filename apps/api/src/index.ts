@@ -9,6 +9,7 @@ import webhookRouter from "./routes/webhookRouter";
 import workerRouter from "./routes/workerRouter";
 
 const app = express();
+app.set("trust proxy", 1);
 
 const limiter = rateLimit({
 	windowMs: 60 * 1000,
