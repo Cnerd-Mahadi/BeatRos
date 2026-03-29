@@ -1,5 +1,5 @@
 import { _env } from "../env";
-import { api } from "./axios";
+import { api } from "shared";
 
 export const dispatchEmail = async ({
 	to,
@@ -9,8 +9,8 @@ export const dispatchEmail = async ({
 	to: string;
 	subject: string;
 	html: string;
-}) => {
-	return api.post(
+}): Promise<void> => {
+	await api.post(
 		"https://api.brevo.com/v3/smtp/email",
 		{
 			sender: { name: "BeatRos", email: _env.MAIL_FROM },
