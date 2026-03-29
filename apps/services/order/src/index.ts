@@ -1,14 +1,13 @@
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
-import morgan from "morgan";
-import { logger, HttpError } from "shared";
+import { logger, HttpError, httpLogger } from "shared";
 import { _env } from "./env";
 import { orderRouter, webhookRouter, workerRouter } from "./route";
 
 const app = express();
 
 app.use(cors());
-app.use(morgan("dev"));
+app.use(httpLogger);
 
 app.use(express.json());
 app.use("/api/webhook", webhookRouter);

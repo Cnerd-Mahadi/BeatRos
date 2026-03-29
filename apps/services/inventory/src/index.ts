@@ -1,8 +1,7 @@
 import cors from "cors";
 import type { NextFunction, Request, Response } from "express";
 import express from "express";
-import morgan from "morgan";
-import { logger, HttpError } from "shared";
+import { logger, HttpError, httpLogger } from "shared";
 import { _env } from "./env";
 import { inventoryRouter } from "./route";
 
@@ -10,7 +9,7 @@ const app = express();
 
 app.use(cors({ origin: process.env.CORS_ORIGIN?.split(",") || "*" }));
 app.use(express.json());
-app.use(morgan("dev"));
+app.use(httpLogger);
 
 app.get("/", (_req, res) => {
 	res.json({ status: "🚀⚡️✨", timestamp: new Date().toISOString() });

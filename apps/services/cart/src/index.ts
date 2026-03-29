@@ -1,7 +1,6 @@
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
-import morgan from "morgan";
-import { logger, HttpError } from "shared";
+import { logger, HttpError, httpLogger } from "shared";
 import { _env } from "./env";
 import { cartRouter } from "./route";
 
@@ -9,7 +8,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(morgan("dev"));
+app.use(httpLogger);
 
 app.get("/", (_req, res) => {
 	res.json({ status: "🚀⚡️✨", timestamp: new Date().toISOString() });

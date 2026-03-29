@@ -2,8 +2,7 @@ import { clerkMiddleware } from "@clerk/express";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import rateLimit from "express-rate-limit";
-import morgan from "morgan";
-import { HttpError, logger } from "shared";
+import { HttpError, httpLogger, logger } from "shared";
 import { _env } from "./env";
 import router from "./routes";
 import webhookRouter from "./routes/webhookRouter";
@@ -32,7 +31,7 @@ app.use(
 );
 app.use("/api/webhook", express.raw({ type: "application/json" }), webhookRouter);
 app.use(express.json());
-app.use(morgan("dev"));
+app.use(httpLogger);
 
 app.get("/", (_req, res) => {
 	res.json({ status: "🚀⚡️✨", timestamp: new Date().toISOString() });
