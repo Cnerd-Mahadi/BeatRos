@@ -1,5 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { SESSION_COOKIE } from "./lib/constant";
 
 const isProtectedRoute = createRouteMatcher(["/checkout(.*)"]);
 const isAuthRoute = createRouteMatcher(["/auth(.*)"]);
@@ -11,15 +12,14 @@ export default clerkMiddleware(async (auth, request) => {
 
 	const { isAuthenticated } = await auth();
 	const response = NextResponse.next();
-	const ANONYMOUS_SESSION_ID_COOKIE = "X-ANONYMOUS-SESSION-ID";
-	const sessionCookie = request.cookies.get(ANONYMOUS_SESSION_ID_COOKIE);
+	const sessionCookie = request.cookies.get(SESSION_COOKIE);
 
 	if (isAuthenticated) {
 		if (isAuthRoute(request)) {
 			// TO DO
 		}
 		if (sessionCookie) {
-			response.cookies.set(ANONYMOUS_SESSION_ID_COOKIE, "", {
+			response.cookies.set(SESSION_COOKIE, "", {
 				maxAge: 0,
 			});
 		}
@@ -28,7 +28,7 @@ export default clerkMiddleware(async (auth, request) => {
 
 	if (!sessionCookie) {
 		const newValue = crypto.randomUUID();
-		response.cookies.set(ANONYMOUS_SESSION_ID_COOKIE, newValue, {
+		response.cookies.set(SESSION_COOKIE, newValue, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",

@@ -1,7 +1,7 @@
 import { getAuth } from "@clerk/express";
 import { Request } from "express";
 import { HttpError, isError, logger, STATUS } from "shared";
-import { ANONYMOUS_SESSION_ID_COOKIE, userType } from "../constant";
+import { SESSION_ID_HEADER, userType } from "../constant";
 import { _env } from "../env";
 import { api } from "../lib/axios";
 import { CartItem } from "../types/cart";
@@ -15,7 +15,7 @@ export function getCurrentSession(req: Request) {
 	if (isAuthenticated) {
 		return { type: userType.USER, id: userId };
 	}
-	sessionId = req.cookies[ANONYMOUS_SESSION_ID_COOKIE] as string | null;
+	sessionId = req.headers[SESSION_ID_HEADER] as string | undefined ?? null;
 	if (sessionId) {
 		return { type: userType.ANONYMOUS, id: sessionId };
 	}

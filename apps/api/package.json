@@ -11,8 +11,6 @@
 	},
 	"dependencies": {
 		"@clerk/express": "^1.7.45",
-		"@types/cookie-parser": "^1.4.10",
-		"cookie-parser": "^1.4.7",
 		"cors": "^2.8.5",
 		"express": "^5.1.0",
 		"tsx": "^4.20.4"

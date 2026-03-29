@@ -1,5 +1,4 @@
 import { clerkMiddleware } from "@clerk/express";
-import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import morgan from "morgan";
@@ -14,7 +13,6 @@ app.head("/ping", (_req, res) => {
 	res.status(200).end();
 });
 
-app.use(cookieParser());
 app.use(clerkMiddleware());
 app.use(
 	cors({
